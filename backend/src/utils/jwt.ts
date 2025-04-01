@@ -1,7 +1,11 @@
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { IUser } from '../models/User';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET is not defined in environment variables');
+}
+
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
 
 export const generateToken = (user: IUser): string => {
@@ -12,7 +16,7 @@ export const generateToken = (user: IUser): string => {
   };
 
   const options: SignOptions = {
-    expiresIn: parseInt(JWT_EXPIRES_IN) || 7 * 24 * 60 * 60, // 7 days in seconds
+    expiresIn: JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'],
   };
 
   return jwt.sign(payload, JWT_SECRET, options);
@@ -20,8 +24,15 @@ export const generateToken = (user: IUser): string => {
 
 export const verifyToken = (token: string): jwt.JwtPayload => {
   try {
-    return jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+    const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
+    return decoded;
   } catch (error) {
-    throw new Error('Invalid token');
+    if (error instanceof jwt.TokenExpiredError) {
+      throw new Error('Token has expired');
+    }
+    if (error instanceof jwt.JsonWebTokenError) {
+      throw new Error('Invalid token');
+    }
+    throw error;
   }
 }; 

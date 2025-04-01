@@ -11,6 +11,7 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
   try {
     // Get token from header
     const authHeader = req.headers.authorization;
+    
     if (!authHeader?.startsWith('Bearer ')) {
       throw new AppError('No token provided', 401);
     }
@@ -19,9 +20,10 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
 
     // Verify token
     const decoded = verifyToken(token);
-
+    
     // Get user from token
     const user = await User.findById(decoded.id).select('-password');
+    
     if (!user) {
       throw new AppError('User not found', 401);
     }
@@ -30,6 +32,12 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
     req.user = user;
     next();
   } catch (error) {
-    next(new AppError('Not authorized', 401));
+    if (error instanceof AppError) {
+      next(error);
+    } else if (error instanceof Error) {
+      next(new AppError(error.message, 401));
+    } else {
+      next(new AppError('Not authorized', 401));
+    }
   }
 }; 
