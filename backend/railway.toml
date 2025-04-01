@@ -4,8 +4,8 @@ nixpacksConfig = { node_version = "18" }
 buildCommand = "npm install && npm run build"
 
 [deploy]
-startCommand = "node --experimental-specifier-resolution=node dist/index.js"
+startCommand = "cd /app && node --experimental-specifier-resolution=node dist/index.js"
 healthcheckPath = "/health"
-healthcheckTimeout = 100
+healthcheckTimeout = 300
 restartPolicyType = "on_failure"
 autoDeploy = false 

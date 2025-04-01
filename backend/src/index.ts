@@ -37,13 +37,26 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Basic health check route
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'ok', 
-    message: 'YouGene API is running',
-    environment: config.nodeEnv,
-    timestamp: new Date().toISOString()
-  });
+app.get('/health', async (req, res) => {
+  try {
+    // Check if database is connected
+    await connectDB();
+    
+    res.json({ 
+      status: 'ok', 
+      message: 'YouGene API is running',
+      environment: config.nodeEnv,
+      timestamp: new Date().toISOString(),
+      database: 'connected'
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: 'Health check failed',
+      error: error instanceof Error ? error.message : 'Unknown error',
+      database: 'disconnected'
+    });
+  }
 });
 
 // API Routes
@@ -80,9 +93,12 @@ app.use('*', (req, res) => {
 // Connect to MongoDB and start server
 const startServer = async () => {
   try {
+    // Connect to database first
     await connectDB();
-    httpServer.listen(config.port, () => {
-      console.log(`YouGene API server running on port ${config.port}`);
+    
+    const port = process.env.PORT || 3000;
+    httpServer.listen(port, () => {
+      console.log(`Server is running on port ${port}`);
       console.log(`Environment: ${config.nodeEnv}`);
       console.log(`Frontend URL: ${config.frontendUrl}`);
     });
@@ -92,4 +108,5 @@ const startServer = async () => {
   }
 };
 
+// Start the server
 startServer(); 
