@@ -41,14 +41,16 @@ export const authService = {
     const response = await api.post('/auth/register', { username, email, password });
     const { token, user } = response.data;
     localStorage.setItem('token', token);
-    return user;
+    return { token, user };
   },
 
   async login(email: string, password: string) {
     const response = await api.post('/auth/login', { email, password });
     const { token, user } = response.data;
-    localStorage.setItem('token', token);
-    return user;
+    if (token) {
+      localStorage.setItem('token', token);
+    }
+    return { token, user };
   },
 
   async getCurrentUser(): Promise<User> {

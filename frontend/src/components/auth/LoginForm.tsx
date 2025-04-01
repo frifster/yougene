@@ -25,6 +25,7 @@ export const LoginForm = () => {
 
     try {
       await login(email, password);
+      await new Promise(resolve => setTimeout(resolve, 100));
       const from = (location.state as LocationState)?.from?.pathname || '/game-hub';
       navigate(from, { replace: true });
     } catch (err: unknown) {
