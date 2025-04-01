@@ -117,7 +117,15 @@ pnpm dev
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Copyright © 2024 You-Gene. All rights reserved.
+
+This software and associated documentation files (the "Software") are proprietary and confidential. 
+The Software is protected by copyright laws and international copyright treaties, as well as other 
+intellectual property laws and treaties.
+
+Unauthorized copying, distribution, modification, public display, or public performance of this 
+Software, or creating derivative works from this Software is strictly prohibited. This includes 
+any text, images, or other media files included with the Software.
 
 ## Acknowledgments
 
