@@ -14,16 +14,26 @@ import monsterRoutes from './routes/monsterRoutes.js';
 const app = express();
 const httpServer = createServer(app);
 
-// Initialize Socket.IO
+// Initialize Socket.IO with production-ready config
 const io = new Server(httpServer, {
   cors: {
     origin: config.frontendUrl,
-    methods: ['GET', 'POST']
-  }
+    methods: ['GET', 'POST'],
+    credentials: true
+  },
+  transports: ['websocket', 'polling']
 });
 
+// Configure CORS
+const corsOptions = {
+  origin: config.frontendUrl,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Basic health check route
@@ -31,7 +41,8 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'ok', 
     message: 'YouGene API is running',
-    environment: config.nodeEnv
+    environment: config.nodeEnv,
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -73,6 +84,7 @@ const startServer = async () => {
     httpServer.listen(config.port, () => {
       console.log(`YouGene API server running on port ${config.port}`);
       console.log(`Environment: ${config.nodeEnv}`);
+      console.log(`Frontend URL: ${config.frontendUrl}`);
     });
   } catch (error) {
     console.error('Failed to start server:', error);
