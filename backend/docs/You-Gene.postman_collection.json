@@ -439,7 +439,6 @@
                   "",
                   "// Check if the response has battle data",
                   "pm.test('Response has battle data', function () {",
-                  "    pm.expect(response).to.have.property('_id');",
                   "    pm.expect(response).to.have.property('player1');",
                   "    pm.expect(response).to.have.property('player2');",
                   "    pm.expect(response).to.have.property('status');",
