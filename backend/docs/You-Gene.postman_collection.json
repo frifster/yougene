@@ -171,6 +171,110 @@
           }
         }
       ]
+    },
+    {
+      "name": "Battles",
+      "description": "Battle system endpoints\n\nRequired Headers:\n- Content-Type: application/json\n\nFeatures:\n- Create and manage battles between characters\n- Turn-based combat system\n- Battle state tracking and logging",
+      "item": [
+        {
+          "name": "Create Battle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"player1\": {\n        \"id\": \"1\",\n        \"name\": \"Player 1\",\n        \"health\": 100,\n        \"maxHealth\": 100,\n        \"attack\": 20,\n        \"defense\": 10,\n        \"speed\": 15\n    },\n    \"player2\": {\n        \"id\": \"2\",\n        \"name\": \"Player 2\",\n        \"health\": 100,\n        \"maxHealth\": 100,\n        \"attack\": 18,\n        \"defense\": 12,\n        \"speed\": 12\n    }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/battles",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "battles"]
+            },
+            "description": "Create a new battle between two characters\n\nRequest Body:\n- player1: Character object (id, name, health, maxHealth, attack, defense, speed)\n- player2: Character object (id, name, health, maxHealth, attack, defense, speed)\n\nResponse:\n- 201: Battle created successfully\n- 400: Invalid input"
+          }
+        },
+        {
+          "name": "Start Battle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/battles/:battleId/start",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "battles", ":battleId", "start"]
+            },
+            "description": "Start a battle\n\nURL Parameters:\n- battleId: ID of the battle to start\n\nResponse:\n- 200: Battle started successfully\n- 400: Invalid battle ID or battle already started\n- 404: Battle not found"
+          }
+        },
+        {
+          "name": "Execute Turn",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"attackerId\": \"1\",\n    \"defenderId\": \"2\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/battles/:battleId/turn",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "battles", ":battleId", "turn"]
+            },
+            "description": "Execute a turn in the battle\n\nURL Parameters:\n- battleId: ID of the battle\n\nRequest Body:\n- attackerId: ID of the attacking character\n- defenderId: ID of the defending character\n\nResponse:\n- 200: Turn executed successfully\n- 400: Invalid battle state or character IDs\n- 404: Battle not found"
+          }
+        },
+        {
+          "name": "Get Battle Status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/battles/:battleId",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "battles", ":battleId"]
+            },
+            "description": "Get the current status of a battle\n\nURL Parameters:\n- battleId: ID of the battle\n\nResponse:\n- 200: Current battle state\n- 404: Battle not found"
+          }
+        },
+        {
+          "name": "Get Battle Log",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/battles/:battleId/log",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "battles", ":battleId", "log"]
+            },
+            "description": "Get the battle log with all actions\n\nURL Parameters:\n- battleId: ID of the battle\n\nResponse:\n- 200: Battle log with all actions\n- 404: Battle not found"
+          }
+        }
+      ]
     }
   ],
   "variable": [
