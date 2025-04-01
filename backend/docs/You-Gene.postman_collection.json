@@ -20,6 +20,7 @@
     },
     {
       "name": "Authentication",
+      "description": "Authentication endpoints for user management\n\nRequired Headers:\n- Content-Type: application/json\n\nEnvironment Variables:\n- {{token}}: JWT token received after login (automatically set)\n\nFlow:\n1. Register a new user\n2. Login with credentials\n3. Use the received token for authenticated requests",
       "item": [
         {
           "name": "Register",
@@ -40,7 +41,7 @@
               "host": ["{{baseUrl}}"],
               "path": ["api", "v1", "auth", "register"]
             },
-            "description": "Register a new user"
+            "description": "Register a new user\n\nRequest Body:\n- username: string (min 3 chars)\n- email: valid email address\n- password: string (min 6 chars)\n\nResponse:\n- 201: User created successfully\n- 400: Invalid input or user exists"
           }
         },
         {
@@ -62,13 +63,14 @@
               "host": ["{{baseUrl}}"],
               "path": ["api", "v1", "auth", "login"]
             },
-            "description": "Login with email and password"
+            "description": "Login with email and password\n\nRequest Body:\n- email: registered email address\n- password: user's password\n\nResponse:\n- 200: Login successful (includes JWT token)\n- 401: Invalid credentials"
           }
         }
       ]
     },
     {
       "name": "Monsters",
+      "description": "Monster management endpoints\n\nRequired Headers:\n- Authorization: Bearer {{token}}\n\nFeatures:\n- Create, read, update, and delete monsters\n- Battle system integration\n- Breeding mechanics\n- Genetic attributes management\n\nNote: All endpoints require authentication",
       "item": [
         {
           "name": "Get All Monsters",
@@ -85,7 +87,51 @@
               "host": ["{{baseUrl}}"],
               "path": ["api", "v1", "monsters"]
             },
-            "description": "Get all monsters (requires authentication)"
+            "description": "Get all monsters owned by the authenticated user\n\nResponse:\n- 200: List of monsters\n- 401: Unauthorized\n\nQuery Parameters:\n- page: Page number (default: 1)\n- limit: Items per page (default: 10)"
+          }
+        },
+        {
+          "name": "Create Monster",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Dragonite\",\n    \"type\": \"dragon\",\n    \"level\": 1,\n    \"geneticAttributes\": {\n        \"strength\": 10,\n        \"speed\": 8,\n        \"health\": 12\n    }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/monsters",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "monsters"]
+            },
+            "description": "Create a new monster\n\nRequest Body:\n- name: Monster name\n- type: Monster type\n- level: Starting level\n- geneticAttributes: Object containing genetic traits\n\nResponse:\n- 201: Monster created\n- 400: Invalid input\n- 401: Unauthorized"
+          }
+        },
+        {
+          "name": "Get Monster by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/monsters/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "monsters", ":id"]
+            },
+            "description": "Get a specific monster by ID\n\nURL Parameters:\n- id: Monster ID\n\nResponse:\n- 200: Monster details\n- 404: Monster not found\n- 401: Unauthorized"
           }
         }
       ]
