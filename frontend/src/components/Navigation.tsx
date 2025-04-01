@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useProgress } from '../contexts/ProgressContext';
 
 const Navigation: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useAuth();
+  const { setIsLoading } = useProgress();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
@@ -41,9 +43,14 @@ const Navigation: React.FC = () => {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
+  const handleLogout = async () => {
+    setIsLoading(true);
+    try {
+      await logout();
+      navigate('/login');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const renderAuthLinks = () => {

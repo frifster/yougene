@@ -1,30 +1,39 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { authService } from '../../services/auth.service';
+import { useAuth } from '../../contexts/AuthContext';
+import { useProgress } from '../../contexts/ProgressContext';
 
 export const RegisterForm = () => {
-  const navigate = useNavigate();
-  const [error, setError] = useState<string>('');
-  const [loading, setLoading] = useState(false);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState('');
+  const navigate = useNavigate();
+  const { register } = useAuth();
+  const { setIsLoading } = useProgress();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
 
-    const formData = new FormData(e.currentTarget);
-    const username = formData.get('username') as string;
-    const email = formData.get('email') as string;
-    const password = formData.get('password') as string;
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    setIsLoading(true);
 
     try {
-      await authService.register(username, email, password);
+      await register(username, email, password);
+      setRegisteredEmail(email);
       setSuccess(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Registration failed');
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'An error occurred during registration');
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -42,7 +51,7 @@ export const RegisterForm = () => {
           </div>
           <div>
             <button
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/login', { state: { email: registeredEmail } })}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/50 transition-colors duration-200"
             >
               Go to Login
@@ -72,6 +81,8 @@ export const RegisterForm = () => {
                 name="username"
                 type="text"
                 required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="appearance-none relative block w-full px-3 py-2 border border-white/10 bg-white/5 placeholder-text/50 text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent sm:text-sm transition-colors duration-200"
                 placeholder="Username"
               />
@@ -85,6 +96,8 @@ export const RegisterForm = () => {
                 name="email"
                 type="email"
                 required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="appearance-none relative block w-full px-3 py-2 border border-white/10 bg-white/5 placeholder-text/50 text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent sm:text-sm transition-colors duration-200"
                 placeholder="Email address"
               />
@@ -98,33 +111,56 @@ export const RegisterForm = () => {
                 name="password"
                 type="password"
                 required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="appearance-none relative block w-full px-3 py-2 border border-white/10 bg-white/5 placeholder-text/50 text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent sm:text-sm transition-colors duration-200"
                 placeholder="Password"
+              />
+            </div>
+            <div>
+              <label htmlFor="confirmPassword" className="sr-only">
+                Confirm Password
+              </label>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="appearance-none relative block w-full px-3 py-2 border border-white/10 bg-white/5 placeholder-text/50 text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent sm:text-sm transition-colors duration-200"
+                placeholder="Confirm Password"
               />
             </div>
           </div>
 
           {error && (
-            <div className="text-red-400 text-sm text-center">{error}</div>
+            <div className="text-red-400 text-sm text-center bg-red-400/10 p-3 rounded-lg">
+              {error}
+            </div>
           )}
 
           <div>
             <button
               type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/50 disabled:opacity-50 transition-colors duration-200"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary/50 transition-colors duration-200"
             >
-              {loading ? 'Creating account...' : 'Create account'}
+              Create Account
             </button>
           </div>
-
-          <div className="text-sm text-center">
-            <span className="text-text/70">Already have an account? </span>
-            <Link to="/login" className="text-primary hover:text-primary/90 transition-colors duration-200">
-              Sign in
-            </Link>
-          </div>
         </form>
+
+        <div className="text-center">
+          <p className="text-sm text-text/80">
+            Already have an account?{' '}
+            <a
+              href="/login"
+              className="font-medium text-primary hover:text-primary/90 transition-colors duration-200"
+            >
+              Sign in
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );

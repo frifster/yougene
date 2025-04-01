@@ -45,16 +45,16 @@ export const login = async (req: AuthRequest, res: Response, next: NextFunction)
     // Check if user exists
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
-      throw new AppError('Invalid credentials', 401);
+      throw new AppError('No account found with this email. Please check your email or sign up.', 401);
     }
 
     // Check password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      throw new AppError('Invalid credentials', 401);
+      throw new AppError('Invalid password. Please check your password and try again.', 401);
     }
 
-    // Generate token`
+    // Generate token
     const token = generateToken(user);
 
     res.json({
