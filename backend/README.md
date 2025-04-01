@@ -72,6 +72,9 @@ pnpm dev
 - `PUT /api/v1/monsters/:id` - Update a monster
 - `DELETE /api/v1/monsters/:id` - Delete a monster
 
+### Breeding System
+- `POST /api/v1/breeding/breed` - Breed two monsters together
+
 #### Monster Schema
 ```typescript
 {
@@ -81,8 +84,34 @@ pnpm dev
   attack: number;     // Attack power (min: 0)
   defense: number;    // Defense power (min: 0)
   description: string; // Monster description
+  parent1?: ObjectId; // Reference to first parent monster
+  parent2?: ObjectId; // Reference to second parent monster
+  generation: number; // Number of generations (starts at 0)
   createdAt: Date;    // Creation timestamp
   updatedAt: Date;    // Last update timestamp
+}
+```
+
+#### Breeding Mechanics
+The breeding system allows you to create new monsters by combining two existing monsters. Here's how it works:
+
+1. **Parent Selection**: Choose two existing monsters to breed together
+2. **Stat Inheritance**: 
+   - Child stats are calculated as the average of both parents' stats
+   - A random factor (0.8-1.2) is applied to add variation
+   - Minimum values are enforced (HP ≥ 1, Attack ≥ 0, Defense ≥ 0)
+3. **Child Monster**:
+   - Starts at level 1
+   - Name is based on the first parent's name (with "Jr." suffix)
+   - Generation count increases based on the highest parent generation
+   - Parent references are stored for lineage tracking
+
+Example breeding request:
+```json
+POST /api/v1/breeding/breed
+{
+  "parent1Id": "monster1_id",
+  "parent2Id": "monster2_id"
 }
 ```
 
@@ -97,8 +126,8 @@ pnpm dev
 - [x] Implement MongoDB connection
 - [x] Create authentication system with JWT
 - [x] Implement basic monster CRUD operations
-- [ ] Create basic battle system API
-- [ ] Implement simple breeding mechanics
+- [x] Create basic battle system API
+- [x] Implement simple breeding mechanics
 - [ ] Add basic exploration zone endpoints
 - [ ] Add request validation with Zod
 - [ ] Implement basic rate limiting

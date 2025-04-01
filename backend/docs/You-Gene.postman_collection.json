@@ -275,6 +275,38 @@
           }
         }
       ]
+    },
+    {
+      "name": "Breeding",
+      "description": "Monster breeding system endpoints\n\nRequired Headers:\n- Content-Type: application/json\n- Authorization: Bearer {{token}}\n\nFeatures:\n- Breed two monsters together\n- Create offspring with inherited traits",
+      "item": [
+        {
+          "name": "Breed Monsters",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"parent1Id\": \"monster1_id\",\n    \"parent2Id\": \"monster2_id\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/breeding/breed",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "breeding", "breed"]
+            },
+            "description": "Breed two monsters together\n\nRequest Body:\n- parent1Id: ID of the first parent monster\n- parent2Id: ID of the second parent monster\n\nResponse:\n- 201: Offspring created successfully\n- 400: Invalid input\n- 404: One or both parent monsters not found\n- 401: Unauthorized (missing or invalid token)\n\nExample Test Script:\n```javascript\n// Get two monster IDs from environment variables\nconst parent1Id = pm.environment.get('monster1_id');\nconst parent2Id = pm.environment.get('monster2_id');\n\n// Set the request body\npm.request.body.raw = JSON.stringify({\n    parent1Id: parent1Id,\n    parent2Id: parent2Id\n});\n\n// Test the response\npm.test('Status code is 201', function () {\n    pm.response.to.have.status(201);\n});\n\npm.test('Response has monster data', function () {\n    const response = pm.response.json();\n    pm.expect(response.data).to.have.property('monster');\n    pm.expect(response.data.monster).to.have.property('name');\n    pm.expect(response.data.monster).to.have.property('parent1');\n    pm.expect(response.data.monster).to.have.property('parent2');\n    pm.expect(response.data.monster).to.have.property('generation');\n});\n```"
+          }
+        }
+      ]
     }
   ],
   "variable": [
