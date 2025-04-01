@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { z } from 'zod';
-import { BreedingService } from '../services/breeding.service';
+import { BreedingService } from '../services/breeding.service.js';
 
 // Validation schema for breeding request
 const breedingSchema = z.object({

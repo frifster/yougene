@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { IMonster } from '../models/Monster';
-import { MonsterService } from '../services/MonsterService';
+import { IMonster } from '../models/Monster.js';
+import { MonsterService } from '../services/MonsterService.js';
 
 export class MonsterController {
   private monsterService: MonsterService;

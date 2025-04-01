@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { Character } from '../models/battle';
-import { BattleService } from '../services/battle.service';
+import { Character } from '../models/battle.js';
+import { BattleService } from '../services/battle.service.js';
 
 export class BattleController {
   private battleService: BattleService;
