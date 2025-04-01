@@ -1,17 +1,18 @@
 import cors from 'cors';
-import dotenv from 'dotenv';
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { config } from './config/index.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
-// Load environment variables
-dotenv.config();
-
+// Initialize Express app
 const app = express();
 const httpServer = createServer(app);
+
+// Initialize Socket.IO
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+    origin: config.frontendUrl,
     methods: ['GET', 'POST']
   }
 });
@@ -22,7 +23,20 @@ app.use(express.json());
 
 // Basic health check route
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', message: 'You-Gene API is running' });
+  res.json({ 
+    status: 'ok', 
+    message: 'You-Gene API is running',
+    environment: config.nodeEnv
+  });
+});
+
+// API Routes (to be implemented)
+app.use('/api/v1/monsters', (req, res) => {
+  res.json({ message: 'Monsters route - Coming soon' });
+});
+
+app.use('/api/v1/auth', (req, res) => {
+  res.json({ message: 'Auth route - Coming soon' });
 });
 
 // Socket.IO connection handling
@@ -34,8 +48,19 @@ io.on('connection', (socket) => {
   });
 });
 
+// Error handling middleware (should be last)
+app.use(errorHandler);
+
+// Handle 404 routes
+app.use('*', (req, res) => {
+  res.status(404).json({
+    status: 'error',
+    message: `Can't find ${req.originalUrl} on this server!`
+  });
+});
+
 // Start server
-const PORT = process.env.PORT || 3000;
-httpServer.listen(PORT, () => {
-  console.log(`You-Gene API server running on port ${PORT}`);
+httpServer.listen(config.port, () => {
+  console.log(`You-Gene API server running on port ${config.port}`);
+  console.log(`Environment: ${config.nodeEnv}`);
 }); 
