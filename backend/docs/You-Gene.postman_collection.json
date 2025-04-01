@@ -70,7 +70,7 @@
     },
     {
       "name": "Monsters",
-      "description": "Monster management endpoints\n\nRequired Headers:\n- Authorization: Bearer {{token}}\n\nFeatures:\n- Create, read, update, and delete monsters\n- Battle system integration\n- Breeding mechanics\n- Genetic attributes management\n\nNote: All endpoints require authentication",
+      "description": "Monster management endpoints\n\nRequired Headers:\n- Content-Type: application/json\n\nFeatures:\n- Create, read, update, and delete monsters\n- Basic monster attributes management",
       "item": [
         {
           "name": "Get All Monsters",
@@ -78,8 +78,8 @@
             "method": "GET",
             "header": [
               {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -87,7 +87,7 @@
               "host": ["{{baseUrl}}"],
               "path": ["api", "v1", "monsters"]
             },
-            "description": "Get all monsters owned by the authenticated user\n\nResponse:\n- 200: List of monsters\n- 401: Unauthorized\n\nQuery Parameters:\n- page: Page number (default: 1)\n- limit: Items per page (default: 10)"
+            "description": "Get all monsters\n\nResponse:\n- 200: List of monsters\n- 500: Server error"
           }
         },
         {
@@ -96,24 +96,20 @@
             "method": "POST",
             "header": [
               {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
-              },
-              {
                 "key": "Content-Type",
                 "value": "application/json"
               }
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"name\": \"Dragonite\",\n    \"type\": \"dragon\",\n    \"level\": 1,\n    \"geneticAttributes\": {\n        \"strength\": 10,\n        \"speed\": 8,\n        \"health\": 12\n    }\n}"
+              "raw": "{\n    \"name\": \"Dragon\",\n    \"level\": 10,\n    \"hp\": 100,\n    \"attack\": 15,\n    \"defense\": 8,\n    \"description\": \"A fearsome dragon\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/v1/monsters",
               "host": ["{{baseUrl}}"],
               "path": ["api", "v1", "monsters"]
             },
-            "description": "Create a new monster\n\nRequest Body:\n- name: Monster name\n- type: Monster type\n- level: Starting level\n- geneticAttributes: Object containing genetic traits\n\nResponse:\n- 201: Monster created\n- 400: Invalid input\n- 401: Unauthorized"
+            "description": "Create a new monster\n\nRequest Body:\n- name: Monster name (string)\n- level: Monster level (number, min: 1)\n- hp: Hit points (number, min: 1)\n- attack: Attack power (number, min: 0)\n- defense: Defense power (number, min: 0)\n- description: Monster description (string)\n\nResponse:\n- 201: Monster created\n- 400: Invalid input"
           }
         },
         {
@@ -122,8 +118,8 @@
             "method": "GET",
             "header": [
               {
-                "key": "Authorization",
-                "value": "Bearer {{token}}"
+                "key": "Content-Type",
+                "value": "application/json"
               }
             ],
             "url": {
@@ -131,7 +127,47 @@
               "host": ["{{baseUrl}}"],
               "path": ["api", "v1", "monsters", ":id"]
             },
-            "description": "Get a specific monster by ID\n\nURL Parameters:\n- id: Monster ID\n\nResponse:\n- 200: Monster details\n- 404: Monster not found\n- 401: Unauthorized"
+            "description": "Get a specific monster by ID\n\nURL Parameters:\n- id: Monster ID\n\nResponse:\n- 200: Monster details\n- 404: Monster not found\n- 500: Server error"
+          }
+        },
+        {
+          "name": "Update Monster",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"hp\": 120,\n    \"attack\": 18\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/monsters/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "monsters", ":id"]
+            },
+            "description": "Update a monster's attributes\n\nURL Parameters:\n- id: Monster ID\n\nRequest Body:\n- name: Monster name (string, optional)\n- level: Monster level (number, min: 1, optional)\n- hp: Hit points (number, min: 1, optional)\n- attack: Attack power (number, min: 0, optional)\n- defense: Defense power (number, min: 0, optional)\n- description: Monster description (string, optional)\n\nResponse:\n- 200: Monster updated\n- 404: Monster not found\n- 400: Invalid input"
+          }
+        },
+        {
+          "name": "Delete Monster",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/monsters/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "monsters", ":id"]
+            },
+            "description": "Delete a monster\n\nURL Parameters:\n- id: Monster ID\n\nResponse:\n- 200: Monster deleted successfully\n- 404: Monster not found\n- 500: Server error"
           }
         }
       ]
@@ -141,11 +177,6 @@
     {
       "key": "baseUrl",
       "value": "http://localhost:3000",
-      "type": "string"
-    },
-    {
-      "key": "token",
-      "value": "your_jwt_token_here",
       "type": "string"
     }
   ]

@@ -61,9 +61,30 @@ pnpm dev
 ### Health Check
 - `GET /health` - Check API status
 
-### API Routes (Coming Soon)
-- `/api/v1/monsters` - Monster management
-- `/api/v1/auth` - Authentication
+### Authentication
+- `POST /api/v1/auth/register` - Register a new user
+- `POST /api/v1/auth/login` - Login with credentials
+
+### Monster Management
+- `GET /api/v1/monsters` - Get all monsters
+- `POST /api/v1/monsters` - Create a new monster
+- `GET /api/v1/monsters/:id` - Get a specific monster
+- `PUT /api/v1/monsters/:id` - Update a monster
+- `DELETE /api/v1/monsters/:id` - Delete a monster
+
+#### Monster Schema
+```typescript
+{
+  name: string;        // Monster name
+  level: number;       // Level (min: 1)
+  hp: number;         // Hit points (min: 1)
+  attack: number;     // Attack power (min: 0)
+  defense: number;    // Defense power (min: 0)
+  description: string; // Monster description
+  createdAt: Date;    // Creation timestamp
+  updatedAt: Date;    // Last update timestamp
+}
+```
 
 ## Development TODOs
 
@@ -74,8 +95,8 @@ pnpm dev
 - [x] Configure CORS and basic middleware
 - [x] Set up Socket.IO for real-time features
 - [x] Implement MongoDB connection
-- [ ] Create authentication system with JWT
-- [ ] Implement basic monster CRUD operations
+- [x] Create authentication system with JWT
+- [x] Implement basic monster CRUD operations
 - [ ] Create basic battle system API
 - [ ] Implement simple breeding mechanics
 - [ ] Add basic exploration zone endpoints
