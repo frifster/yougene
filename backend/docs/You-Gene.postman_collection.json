@@ -20,7 +20,7 @@
     },
     {
       "name": "Authentication",
-      "description": "Authentication endpoints for user management\n\nRequired Headers:\n- Content-Type: application/json\n\nEnvironment Variables:\n- {{token}}: JWT token received after login (automatically set)\n\nFlow:\n1. Register a new user\n2. Login with credentials\n3. Use the received token for authenticated requests\n4. Logout to invalidate the token",
+      "description": "Authentication endpoints for user management\n\nRequired Headers:\n- Content-Type: application/json\n\nEnvironment Variables:\n- {{token}}: JWT token received after login (automatically set)\n\nFlow:\n1. Register a new user\n2. Login with credentials (automatically saves token)\n3. Use the received token for authenticated requests\n4. Logout to invalidate the token",
       "item": [
         {
           "name": "Register",
@@ -46,6 +46,34 @@
         },
         {
           "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Check if the response is successful",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Parse the response body",
+                  "const response = pm.response.json();",
+                  "",
+                  "// Check if the response has a token",
+                  "pm.test('Response has token', function () {",
+                  "    pm.expect(response).to.have.property('token');",
+                  "});",
+                  "",
+                  "// Save the token to collection variable",
+                  "if (response.token) {",
+                  "    pm.collectionVariables.set('token', response.token);",
+                  "    console.log('Token saved to collection variable');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
           "request": {
             "method": "POST",
             "header": [
@@ -63,7 +91,7 @@
               "host": ["{{baseUrl}}"],
               "path": ["api", "v1", "auth", "login"]
             },
-            "description": "Login with email and password\n\nRequest Body:\n- email: registered email address\n- password: user's password\n\nResponse:\n- 200: Login successful (includes JWT token)\n- 401: Invalid credentials"
+            "description": "Login with email and password\n\nRequest Body:\n- email: registered email address\n- password: user's password\n\nResponse:\n- 200: Login successful (includes JWT token)\n- 401: Invalid credentials\n\nAutomatically saves the token to {{token}} collection variable"
           }
         },
         {
