@@ -1,6 +1,6 @@
-# You-Gene Frontend
+# YouGene Frontend
 
-The frontend application for You-Gene, built with React, TypeScript, and Tailwind CSS.
+The frontend application for YouGene, built with React, TypeScript, and Tailwind CSS.
 
 ## Tech Stack
 

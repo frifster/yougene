@@ -30,7 +30,7 @@ const LandingPage: React.FC = () => {
           <div className="w-full text-center space-y-8">
             <div className="space-y-4">
               <h1 className="text-6xl sm:text-7xl lg:text-8xl font-bold text-white drop-shadow-lg">
-                You-Gene
+                YouGene
               </h1>
               <h2 className="text-xl sm:text-2xl lg:text-3xl text-white font-light tracking-wider drop-shadow-md">
                 Monster Fusion Frontier
