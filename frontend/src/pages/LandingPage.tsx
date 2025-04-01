@@ -8,12 +8,12 @@ const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen w-full bg-background text-text flex items-center justify-center relative">
       {/* Background Pattern */}
-      <div className="fixed inset-0">
+      <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-background" />
       </div>
 
       {/* DNA Helix Animation - Reduced opacity */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
         <div className="absolute w-[800px] h-[800px] -top-1/4 -right-1/4 animate-dna-spin opacity-5">
           <div className="absolute inset-0 border-2 border-primary/30 rounded-full" />
           <div className="absolute inset-[100px] border-2 border-secondary/30 rounded-full" />
@@ -27,7 +27,7 @@ const LandingPage: React.FC = () => {
       </div>
 
       {/* Main Content Container */}
-      <Container>
+      <Container className="relative z-10">
         <div className="flex flex-col items-center justify-center space-y-16">
           {/* Title Section */}
           <div className="w-full text-center space-y-8">
@@ -50,13 +50,13 @@ const LandingPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <button
                 onClick={() => navigate('/game-hub')}
-                className="flex-1 px-8 py-4 bg-white text-primary font-semibold rounded-xl transition-all duration-300 text-center shadow-xl hover:shadow-white/20 hover:bg-white/90"
+                className="flex-1 px-8 py-4 bg-white text-primary font-semibold rounded-xl transition-all duration-300 text-center shadow-xl hover:shadow-white/20 hover:bg-white/90 cursor-pointer relative z-20"
               >
                 <span className="text-lg">Enter Lab</span>
               </button>
               <button
                 onClick={() => navigate('/profile')}
-                className="flex-1 px-8 py-4 bg-white/10 backdrop-blur-lg text-white font-semibold rounded-xl transition-all duration-300 text-center shadow-xl hover:bg-white/20"
+                className="flex-1 px-8 py-4 bg-white/10 backdrop-blur-lg text-white font-semibold rounded-xl transition-all duration-300 text-center shadow-xl hover:bg-white/20 cursor-pointer relative z-20"
               >
                 <span className="text-lg">Researcher Profile</span>
               </button>
@@ -65,7 +65,7 @@ const LandingPage: React.FC = () => {
 
           {/* Feature Cards */}
           <Grid cols={3} gap="md">
-            <Card className="bg-white/10 backdrop-blur-lg flex flex-col items-center text-center hover:bg-white/20 transition-all duration-300">
+            <Card className="bg-white/10 backdrop-blur-lg flex flex-col items-center text-center hover:bg-white/20 transition-all duration-300 relative z-10">
               <div className="text-4xl mb-4">🧬</div>
               <h3 className="text-xl font-semibold mb-3 text-white">Genetic Fusion</h3>
               <p className="text-white/90">
@@ -73,14 +73,14 @@ const LandingPage: React.FC = () => {
                 laboratory
               </p>
             </Card>
-            <Card className="bg-white/10 backdrop-blur-lg flex flex-col items-center text-center hover:bg-white/20 transition-all duration-300">
+            <Card className="bg-white/10 backdrop-blur-lg flex flex-col items-center text-center hover:bg-white/20 transition-all duration-300 relative z-10">
               <div className="text-4xl mb-4">⚔️</div>
               <h3 className="text-xl font-semibold mb-3 text-white">Strategic Battles</h3>
               <p className="text-white/90">
                 Test your creations in tactical battles against other researchers
               </p>
             </Card>
-            <Card className="bg-white/10 backdrop-blur-lg flex flex-col items-center text-center hover:bg-white/20 transition-all duration-300">
+            <Card className="bg-white/10 backdrop-blur-lg flex flex-col items-center text-center hover:bg-white/20 transition-all duration-300 relative z-10">
               <div className="text-4xl mb-4">🌍</div>
               <h3 className="text-xl font-semibold mb-3 text-white">World Exploration</h3>
               <p className="text-white/90">

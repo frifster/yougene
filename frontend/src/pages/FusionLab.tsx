@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Card, Container } from '../components/layout';
 
 interface Monster {
   id: string;
@@ -76,146 +77,144 @@ const FusionLab: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-text p-8">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Fusion Lab</h1>
+    <Container>
+      <h1 className="text-4xl font-bold mb-8">Fusion Lab</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          {/* Parent 1 Selection */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h2 className="text-2xl font-semibold mb-4">Parent 1</h2>
-            {selectedParent1 ? (
-              <div className="space-y-4">
-                <div className="flex justify-between items-start">
-                  <h3 className="text-xl">{selectedParent1.name}</h3>
-                  <span className="px-2 py-1 bg-primary/20 rounded text-sm">
-                    {selectedParent1.type}
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Level:</span>
-                    <span>{selectedParent1.level}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Genetic Stability:</span>
-                    <span>{selectedParent1.geneticStability}%</span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setSelectedParent1(null)}
-                  className="text-red-400 hover:text-red-300"
-                >
-                  Clear Selection
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <h3 className="text-lg mb-2">Select a monster:</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  {availableMonsters.map(monster => (
-                    <button
-                      key={monster.id}
-                      onClick={() => handleParentSelect(monster, 1)}
-                      className="p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors text-left"
-                    >
-                      <div className="font-semibold">{monster.name}</div>
-                      <div className="text-sm text-gray-400">{monster.type}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Parent 2 Selection */}
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h2 className="text-2xl font-semibold mb-4">Parent 2</h2>
-            {selectedParent2 ? (
-              <div className="space-y-4">
-                <div className="flex justify-between items-start">
-                  <h3 className="text-xl">{selectedParent2.name}</h3>
-                  <span className="px-2 py-1 bg-primary/20 rounded text-sm">
-                    {selectedParent2.type}
-                  </span>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between">
-                    <span>Level:</span>
-                    <span>{selectedParent2.level}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Genetic Stability:</span>
-                    <span>{selectedParent2.geneticStability}%</span>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setSelectedParent2(null)}
-                  className="text-red-400 hover:text-red-300"
-                >
-                  Clear Selection
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <h3 className="text-lg mb-2">Select a monster:</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  {availableMonsters.map(monster => (
-                    <button
-                      key={monster.id}
-                      onClick={() => handleParentSelect(monster, 2)}
-                      className="p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors text-left"
-                    >
-                      <div className="font-semibold">{monster.name}</div>
-                      <div className="text-sm text-gray-400">{monster.type}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Compatibility and Fusion Controls */}
-        <div className="bg-gray-800 rounded-lg p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold">Fusion Analysis</h2>
-            {selectedParent1 && selectedParent2 && (
-              <div className="text-xl">
-                Compatibility: <span className="text-accent">{compatibility}%</span>
-              </div>
-            )}
-          </div>
-
-          {selectedParent1 && selectedParent2 ? (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        {/* Parent 1 Selection */}
+        <Card>
+          <h2 className="text-2xl font-semibold mb-4">Parent 1</h2>
+          {selectedParent1 ? (
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <h3 className="font-semibold mb-2">Predicted Offspring Type:</h3>
-                  <div className="p-4 bg-gray-700 rounded-lg">
-                    {selectedParent1.type} + {selectedParent2.type}
-                  </div>
+              <div className="flex justify-between items-start">
+                <h3 className="text-xl">{selectedParent1.name}</h3>
+                <span className="px-2 py-1 bg-primary/20 rounded text-sm">
+                  {selectedParent1.type}
+                </span>
+              </div>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span>Level:</span>
+                  <span>{selectedParent1.level}</span>
                 </div>
-                <div>
-                  <h3 className="font-semibold mb-2">Mutation Chance:</h3>
-                  <div className="p-4 bg-gray-700 rounded-lg">
-                    {Math.round((100 - compatibility) / 2)}%
-                  </div>
+                <div className="flex justify-between">
+                  <span>Genetic Stability:</span>
+                  <span>{selectedParent1.geneticStability}%</span>
                 </div>
               </div>
               <button
-                className="w-full bg-accent hover:bg-accent/90 text-white py-3 rounded-lg transition-colors"
-                disabled={compatibility < 50}
+                onClick={() => setSelectedParent1(null)}
+                className="text-red-400 hover:text-red-300"
               >
-                {compatibility < 50 ? 'Insufficient Compatibility' : 'Begin Fusion'}
+                Clear Selection
               </button>
             </div>
           ) : (
-            <p className="text-gray-400">Select two monsters to begin fusion analysis</p>
+            <div className="space-y-4">
+              <h3 className="text-lg mb-2">Select a monster:</h3>
+              <div className="grid grid-cols-2 gap-4">
+                {availableMonsters.map(monster => (
+                  <button
+                    key={monster.id}
+                    onClick={() => handleParentSelect(monster, 1)}
+                    className="p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors text-left"
+                  >
+                    <div className="font-semibold">{monster.name}</div>
+                    <div className="text-sm text-gray-400">{monster.type}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </Card>
+
+        {/* Parent 2 Selection */}
+        <Card>
+          <h2 className="text-2xl font-semibold mb-4">Parent 2</h2>
+          {selectedParent2 ? (
+            <div className="space-y-4">
+              <div className="flex justify-between items-start">
+                <h3 className="text-xl">{selectedParent2.name}</h3>
+                <span className="px-2 py-1 bg-primary/20 rounded text-sm">
+                  {selectedParent2.type}
+                </span>
+              </div>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span>Level:</span>
+                  <span>{selectedParent2.level}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Genetic Stability:</span>
+                  <span>{selectedParent2.geneticStability}%</span>
+                </div>
+              </div>
+              <button
+                onClick={() => setSelectedParent2(null)}
+                className="text-red-400 hover:text-red-300"
+              >
+                Clear Selection
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              <h3 className="text-lg mb-2">Select a monster:</h3>
+              <div className="grid grid-cols-2 gap-4">
+                {availableMonsters.map(monster => (
+                  <button
+                    key={monster.id}
+                    onClick={() => handleParentSelect(monster, 2)}
+                    className="p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors text-left"
+                  >
+                    <div className="font-semibold">{monster.name}</div>
+                    <div className="text-sm text-gray-400">{monster.type}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </Card>
+      </div>
+
+      {/* Compatibility and Fusion Controls */}
+      <Card>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-semibold">Fusion Analysis</h2>
+          {selectedParent1 && selectedParent2 && (
+            <div className="text-xl">
+              Compatibility: <span className="text-accent">{compatibility}%</span>
+            </div>
           )}
         </div>
-      </div>
-    </div>
+
+        {selectedParent1 && selectedParent2 ? (
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <h3 className="font-semibold mb-2">Predicted Offspring Type:</h3>
+                <div className="p-4 bg-gray-700 rounded-lg">
+                  {selectedParent1.type} + {selectedParent2.type}
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold mb-2">Mutation Chance:</h3>
+                <div className="p-4 bg-gray-700 rounded-lg">
+                  {Math.round((100 - compatibility) / 2)}%
+                </div>
+              </div>
+            </div>
+            <button
+              className="w-full bg-accent hover:bg-accent/90 text-white py-3 rounded-lg transition-colors"
+              disabled={compatibility < 50}
+            >
+              {compatibility < 50 ? 'Insufficient Compatibility' : 'Begin Fusion'}
+            </button>
+          </div>
+        ) : (
+          <p className="text-gray-400">Select two monsters to begin fusion analysis</p>
+        )}
+      </Card>
+    </Container>
   );
 };
 
