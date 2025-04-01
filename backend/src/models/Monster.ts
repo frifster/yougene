@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IMonster extends Document {
+  id: string;
   name: string;
   level: number;
   hp: number;
@@ -25,7 +26,14 @@ const MonsterSchema: Schema = new Schema({
   parent2: { type: Schema.Types.ObjectId, ref: 'Monster' },
   generation: { type: Number, required: true, default: 0 }
 }, {
-  timestamps: true
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
+
+// Add virtual property to transform _id to id
+MonsterSchema.virtual('id').get(function(this: any) {
+  return this._id.toHexString();
 });
 
 export default mongoose.model<IMonster>('Monster', MonsterSchema); 

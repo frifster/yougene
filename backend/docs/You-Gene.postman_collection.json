@@ -160,7 +160,105 @@
               "path": ["api", "v1", "monsters"]
             },
             "description": "Create a new monster\n\nRequest Body:\n- name: Monster name (string)\n- level: Monster level (number, min: 1)\n- hp: Hit points (number, min: 1)\n- attack: Attack power (number, min: 0)\n- defense: Defense power (number, min: 0)\n- description: Monster description (string)\n\nResponse:\n- 201: Monster created\n- 400: Invalid input"
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Check if the response is successful",
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// Parse the response body",
+                  "const response = pm.response.json();",
+                  "",
+                  "// Check if the response has monster data",
+                  "pm.test('Response has monster data', function () {",
+                  "    pm.expect(response).to.have.property('id');",
+                  "    pm.expect(response).to.have.property('name');",
+                  "    pm.expect(response).to.have.property('level');",
+                  "    pm.expect(response).to.have.property('hp');",
+                  "    pm.expect(response).to.have.property('attack');",
+                  "    pm.expect(response).to.have.property('defense');",
+                  "    pm.expect(response).to.have.property('description');",
+                  "});",
+                  "",
+                  "// Save the monster ID to collection variable",
+                  "if (response.id) {",
+                  "    const lastCreatedMonsterId = pm.collectionVariables.get('lastCreatedMonsterId');",
+                  "    if (lastCreatedMonsterId) {",
+                  "        // If we already have a monster ID, save this one as secondMonsterId",
+                  "        pm.collectionVariables.set('secondMonsterId', response.id);",
+                  "        console.log('Second monster ID saved to collection variable');",
+                  "    } else {",
+                  "        // If this is the first monster, save it as lastCreatedMonsterId",
+                  "        pm.collectionVariables.set('lastCreatedMonsterId', response.id);",
+                  "        console.log('First monster ID saved to collection variable');",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Second Monster",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Phoenix\",\n    \"level\": 12,\n    \"hp\": 120,\n    \"attack\": 18,\n    \"defense\": 10,\n    \"description\": \"A majestic phoenix\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/monsters",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "monsters"]
+            },
+            "description": "Create a second monster for battle\n\nRequest Body:\n- name: Monster name (string)\n- level: Monster level (number, min: 1)\n- hp: Hit points (number, min: 1)\n- attack: Attack power (number, min: 0)\n- defense: Defense power (number, min: 0)\n- description: Monster description (string)\n\nResponse:\n- 201: Monster created\n- 400: Invalid input"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Check if the response is successful",
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// Parse the response body",
+                  "const response = pm.response.json();",
+                  "",
+                  "// Check if the response has monster data",
+                  "pm.test('Response has monster data', function () {",
+                  "    pm.expect(response).to.have.property('id');",
+                  "    pm.expect(response).to.have.property('name');",
+                  "    pm.expect(response).to.have.property('level');",
+                  "    pm.expect(response).to.have.property('hp');",
+                  "    pm.expect(response).to.have.property('attack');",
+                  "    pm.expect(response).to.have.property('defense');",
+                  "    pm.expect(response).to.have.property('description');",
+                  "});",
+                  "",
+                  "// Save the monster ID to collection variable",
+                  "if (response.id) {",
+                  "    pm.collectionVariables.set('secondMonsterId', response.id);",
+                  "    console.log('Second monster ID saved to collection variable');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         },
         {
           "name": "Get Monster by ID",
@@ -173,9 +271,9 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/monsters/:id",
+              "raw": "{{baseUrl}}/api/v1/monsters/{{lastCreatedMonsterId}}",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "monsters", ":id"]
+              "path": ["api", "v1", "monsters", "{{lastCreatedMonsterId}}"]
             },
             "description": "Get a specific monster by ID\n\nURL Parameters:\n- id: Monster ID\n\nResponse:\n- 200: Monster details\n- 404: Monster not found\n- 500: Server error"
           }
@@ -195,9 +293,9 @@
               "raw": "{\n    \"hp\": 120,\n    \"attack\": 18\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/api/v1/monsters/:id",
+              "raw": "{{baseUrl}}/api/v1/monsters/{{lastCreatedMonsterId}}",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "monsters", ":id"]
+              "path": ["api", "v1", "monsters", "{{lastCreatedMonsterId}}"]
             },
             "description": "Update a monster's attributes\n\nURL Parameters:\n- id: Monster ID\n\nRequest Body:\n- name: Monster name (string, optional)\n- level: Monster level (number, min: 1, optional)\n- hp: Hit points (number, min: 1, optional)\n- attack: Attack power (number, min: 0, optional)\n- defense: Defense power (number, min: 0, optional)\n- description: Monster description (string, optional)\n\nResponse:\n- 200: Monster updated\n- 404: Monster not found\n- 400: Invalid input"
           }
@@ -213,9 +311,9 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/monsters/:id",
+              "raw": "{{baseUrl}}/api/v1/monsters/{{lastCreatedMonsterId}}",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "monsters", ":id"]
+              "path": ["api", "v1", "monsters", "{{lastCreatedMonsterId}}"]
             },
             "description": "Delete a monster\n\nURL Parameters:\n- id: Monster ID\n\nResponse:\n- 200: Monster deleted successfully\n- 404: Monster not found\n- 500: Server error"
           }
@@ -238,7 +336,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"player1\": {\n        \"id\": \"1\",\n        \"name\": \"Player 1\",\n        \"health\": 100,\n        \"maxHealth\": 100,\n        \"attack\": 20,\n        \"defense\": 10,\n        \"speed\": 15\n    },\n    \"player2\": {\n        \"id\": \"2\",\n        \"name\": \"Player 2\",\n        \"health\": 100,\n        \"maxHealth\": 100,\n        \"attack\": 18,\n        \"defense\": 12,\n        \"speed\": 12\n    }\n}"
+              "raw": "{\n    \"player1\": {\n        \"id\": \"{{lastCreatedMonsterId}}\",\n        \"name\": \"Player 1\",\n        \"health\": 100,\n        \"maxHealth\": 100,\n        \"attack\": 20,\n        \"defense\": 10,\n        \"speed\": 15\n    },\n    \"player2\": {\n        \"id\": \"{{secondMonsterId}}\",\n        \"name\": \"Player 2\",\n        \"health\": 100,\n        \"maxHealth\": 100,\n        \"attack\": 18,\n        \"defense\": 12,\n        \"speed\": 12\n    }\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/v1/battles",
@@ -246,7 +344,46 @@
               "path": ["api", "v1", "battles"]
             },
             "description": "Create a new battle between two characters\n\nRequest Body:\n- player1: Character object (id, name, health, maxHealth, attack, defense, speed)\n- player2: Character object (id, name, health, maxHealth, attack, defense, speed)\n\nResponse:\n- 201: Battle created successfully\n- 400: Invalid input"
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Check if the response is successful",
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// Parse the response body",
+                  "const response = pm.response.json();",
+                  "",
+                  "// Check if the response has battle data",
+                  "pm.test('Response has battle data', function () {",
+                  "    pm.expect(response).to.have.property('id');",
+                  "    pm.expect(response).to.have.property('player1');",
+                  "    pm.expect(response).to.have.property('player2');",
+                  "    pm.expect(response).to.have.property('status');",
+                  "    pm.expect(response).to.have.property('createdAt');",
+                  "});",
+                  "",
+                  "// Save the battle ID to collection variable",
+                  "if (response.id) {",
+                  "    pm.collectionVariables.set('lastCreatedBattleId', response.id);",
+                  "    console.log('Battle ID saved to collection variable');",
+                  "}",
+                  "",
+                  "// Initialize attacker and defender variables",
+                  "if (response.player1 && response.player2) {",
+                  "    pm.collectionVariables.set('currentAttackerId', response.player1.id);",
+                  "    pm.collectionVariables.set('currentDefenderId', response.player2.id);",
+                  "    console.log('Attacker and defender initialized');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         },
         {
           "name": "Start Battle",
@@ -259,9 +396,9 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/battles/:battleId/start",
+              "raw": "{{baseUrl}}/api/v1/battles/{{lastCreatedBattleId}}/start",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "battles", ":battleId", "start"]
+              "path": ["api", "v1", "battles", "{{lastCreatedBattleId}}", "start"]
             },
             "description": "Start a battle\n\nURL Parameters:\n- battleId: ID of the battle to start\n\nResponse:\n- 200: Battle started successfully\n- 400: Invalid battle ID or battle already started\n- 404: Battle not found"
           }
@@ -278,15 +415,48 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"attackerId\": \"1\",\n    \"defenderId\": \"2\"\n}"
+              "raw": "{\n    \"attackerId\": \"{{currentAttackerId}}\",\n    \"defenderId\": \"{{currentDefenderId}}\"\n}"
             },
             "url": {
-              "raw": "{{baseUrl}}/api/v1/battles/:battleId/turn",
+              "raw": "{{baseUrl}}/api/v1/battles/{{lastCreatedBattleId}}/turn",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "battles", ":battleId", "turn"]
+              "path": ["api", "v1", "battles", "{{lastCreatedBattleId}}", "turn"]
             },
             "description": "Execute a turn in the battle\n\nURL Parameters:\n- battleId: ID of the battle\n\nRequest Body:\n- attackerId: ID of the attacking character\n- defenderId: ID of the defending character\n\nResponse:\n- 200: Turn executed successfully\n- 400: Invalid battle state or character IDs\n- 404: Battle not found"
-          }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Check if the response is successful",
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "// Parse the response body",
+                  "const response = pm.response.json();",
+                  "",
+                  "// Check if the response has battle data",
+                  "pm.test('Response has battle data', function () {",
+                  "    pm.expect(response).to.have.property('_id');",
+                  "    pm.expect(response).to.have.property('player1');",
+                  "    pm.expect(response).to.have.property('player2');",
+                  "    pm.expect(response).to.have.property('status');",
+                  "    pm.expect(response).to.have.property('currentTurn');",
+                  "});",
+                  "",
+                  "// Swap attacker and defender for next turn",
+                  "const currentAttacker = pm.collectionVariables.get('currentAttackerId');",
+                  "const currentDefender = pm.collectionVariables.get('currentDefenderId');",
+                  "pm.collectionVariables.set('currentAttackerId', currentDefender);",
+                  "pm.collectionVariables.set('currentDefenderId', currentAttacker);",
+                  "console.log('Turn swapped for next request');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         },
         {
           "name": "Get Battle Status",
@@ -299,9 +469,9 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/battles/:battleId",
+              "raw": "{{baseUrl}}/api/v1/battles/{{lastCreatedBattleId}}",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "battles", ":battleId"]
+              "path": ["api", "v1", "battles", "{{lastCreatedBattleId}}"]
             },
             "description": "Get the current status of a battle\n\nURL Parameters:\n- battleId: ID of the battle\n\nResponse:\n- 200: Current battle state\n- 404: Battle not found"
           }
@@ -317,9 +487,9 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/api/v1/battles/:battleId/log",
+              "raw": "{{baseUrl}}/api/v1/battles/{{lastCreatedBattleId}}/log",
               "host": ["{{baseUrl}}"],
-              "path": ["api", "v1", "battles", ":battleId", "log"]
+              "path": ["api", "v1", "battles", "{{lastCreatedBattleId}}", "log"]
             },
             "description": "Get the battle log with all actions\n\nURL Parameters:\n- battleId: ID of the battle\n\nResponse:\n- 200: Battle log with all actions\n- 404: Battle not found"
           }
