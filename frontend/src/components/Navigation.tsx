@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const Navigation: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isActive = (path: string) => {
@@ -11,6 +14,98 @@ const Navigation: React.FC = () => {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
+
+  const renderAuthLinks = () => {
+    if (isAuthenticated) {
+      return (
+        <button
+          onClick={handleLogout}
+          className="px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none text-text/80 hover:text-text hover:bg-white/5"
+        >
+          Logout
+        </button>
+      );
+    }
+
+    return (
+      <>
+        <Link
+          to="/login"
+          className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
+            isActive('/login')
+              ? 'bg-primary/20 text-primary'
+              : 'text-text/80 hover:text-text hover:bg-white/5'
+          }`}
+        >
+          Login
+        </Link>
+        <Link
+          to="/register"
+          className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
+            isActive('/register')
+              ? 'bg-primary/20 text-primary'
+              : 'text-text/80 hover:text-text hover:bg-white/5'
+          }`}
+        >
+          Register
+        </Link>
+      </>
+    );
+  };
+
+  const renderGameLinks = () => {
+    if (!isAuthenticated) return null;
+
+    return (
+      <>
+        <Link
+          to="/hub"
+          className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
+            isActive('/hub')
+              ? 'bg-primary/20 text-primary'
+              : 'text-text/80 hover:text-text hover:bg-white/5'
+          }`}
+        >
+          Lab
+        </Link>
+        <Link
+          to="/profile"
+          className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
+            isActive('/profile')
+              ? 'bg-primary/20 text-primary'
+              : 'text-text/80 hover:text-text hover:bg-white/5'
+          }`}
+        >
+          Profile
+        </Link>
+        <Link
+          to="/collection"
+          className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
+            isActive('/collection')
+              ? 'bg-primary/20 text-primary'
+              : 'text-text/80 hover:text-text hover:bg-white/5'
+          }`}
+        >
+          Collection
+        </Link>
+        <Link
+          to="/battle"
+          className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
+            isActive('/battle')
+              ? 'bg-primary/20 text-primary'
+              : 'text-text/80 hover:text-text hover:bg-white/5'
+          }`}
+        >
+          Battle
+        </Link>
+      </>
+    );
   };
 
   return (
@@ -25,46 +120,8 @@ const Navigation: React.FC = () => {
           {/* Navigation Links */}
           <div className="hidden md:block">
             <div className="flex items-center space-x-4">
-              <Link
-                to="/hub"
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
-                  isActive('/hub')
-                    ? 'bg-primary/20 text-primary'
-                    : 'text-text/80 hover:text-text hover:bg-white/5'
-                }`}
-              >
-                Lab
-              </Link>
-              <Link
-                to="/profile"
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
-                  isActive('/profile')
-                    ? 'bg-primary/20 text-primary'
-                    : 'text-text/80 hover:text-text hover:bg-white/5'
-                }`}
-              >
-                Profile
-              </Link>
-              <Link
-                to="/collection"
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
-                  isActive('/collection')
-                    ? 'bg-primary/20 text-primary'
-                    : 'text-text/80 hover:text-text hover:bg-white/5'
-                }`}
-              >
-                Collection
-              </Link>
-              <Link
-                to="/battle"
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
-                  isActive('/battle')
-                    ? 'bg-primary/20 text-primary'
-                    : 'text-text/80 hover:text-text hover:bg-white/5'
-                }`}
-              >
-                Battle
-              </Link>
+              {renderGameLinks()}
+              {renderAuthLinks()}
             </div>
           </div>
 
@@ -122,50 +179,8 @@ const Navigation: React.FC = () => {
         id="mobile-menu"
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background/95 backdrop-blur-sm">
-          <Link
-            to="/hub"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={`block px-3 py-2 rounded-lg text-base font-medium transition-colors duration-200 select-none ${
-              isActive('/hub')
-                ? 'bg-primary/20 text-primary'
-                : 'text-text/80 hover:text-text hover:bg-white/5'
-            }`}
-          >
-            Lab
-          </Link>
-          <Link
-            to="/profile"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={`block px-3 py-2 rounded-lg text-base font-medium transition-colors duration-200 select-none ${
-              isActive('/profile')
-                ? 'bg-primary/20 text-primary'
-                : 'text-text/80 hover:text-text hover:bg-white/5'
-            }`}
-          >
-            Profile
-          </Link>
-          <Link
-            to="/collection"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={`block px-3 py-2 rounded-lg text-base font-medium transition-colors duration-200 select-none ${
-              isActive('/collection')
-                ? 'bg-primary/20 text-primary'
-                : 'text-text/80 hover:text-text hover:bg-white/5'
-            }`}
-          >
-            Collection
-          </Link>
-          <Link
-            to="/battle"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={`block px-3 py-2 rounded-lg text-base font-medium transition-colors duration-200 select-none ${
-              isActive('/battle')
-                ? 'bg-primary/20 text-primary'
-                : 'text-text/80 hover:text-text hover:bg-white/5'
-            }`}
-          >
-            Battle
-          </Link>
+          {renderGameLinks()}
+          {renderAuthLinks()}
         </div>
       </div>
     </nav>
