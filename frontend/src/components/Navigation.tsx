@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -7,6 +7,24 @@ const Navigation: React.FC = () => {
   const navigate = useNavigate();
   const { isAuthenticated, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location]);
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -14,6 +32,13 @@ const Navigation: React.FC = () => {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      toggleMobileMenu();
+    }
   };
 
   const handleLogout = () => {
@@ -130,7 +155,8 @@ const Navigation: React.FC = () => {
             <button
               type="button"
               onClick={toggleMobileMenu}
-              className="inline-flex items-center justify-center p-2 rounded-lg text-text/80 hover:text-text hover:bg-white/5 focus:outline-none select-none"
+              onKeyPress={handleKeyPress}
+              className="inline-flex items-center justify-center p-2 rounded-lg text-text/80 hover:text-text hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-primary/50 select-none"
               aria-controls="mobile-menu"
               aria-expanded={isMobileMenuOpen}
             >
@@ -173,12 +199,13 @@ const Navigation: React.FC = () => {
 
       {/* Mobile menu */}
       <div
-        className={`md:hidden transition-all duration-300 ease-in-out ${
-          isMobileMenuOpen ? 'opacity-100 max-h-96' : 'opacity-0 max-h-0 overflow-hidden'
+        ref={mobileMenuRef}
+        className={`md:hidden transition-all duration-300 ease-in-out transform ${
+          isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
         }`}
         id="mobile-menu"
       >
-        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background/95 backdrop-blur-sm">
+        <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-background/95 backdrop-blur-sm border-t border-white/10">
           {renderGameLinks()}
           {renderAuthLinks()}
         </div>
