@@ -1,4 +1,4 @@
-# You-Gene: Monster Fusion Frontier
+# YouGene: Monster Fusion Frontier
 
 A web-based monster collection, breeding, and battle game featuring interactive 3D graphics. Players explore various biomes to catch wild monsters, then use the revolutionary "You-Gene Technology" to breed and fuse them into powerful new creatures.
 
