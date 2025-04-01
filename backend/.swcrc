@@ -4,7 +4,7 @@
     "parser": {
       "syntax": "typescript",
       "tsx": false,
-      "decorators": true,
+      "decorators": false,
       "dynamicImport": true
     },
     "target": "es2022",
