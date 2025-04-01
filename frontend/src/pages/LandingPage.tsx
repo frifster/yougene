@@ -3,73 +3,79 @@ import { Link } from 'react-router-dom';
 
 const LandingPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background text-text relative overflow-hidden">
+    <div className="min-h-screen w-full bg-background text-text flex items-center justify-center">
       {/* Background Pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
+      <div className="fixed inset-0">
+        <div className="absolute inset-0 bg-primary bg-opacity-5" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-secondary via-background to-background opacity-10" />
+      </div>
       
-      {/* DNA Animation */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-0 left-0 w-full h-full animate-dna-spin">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96">
-            <div className="absolute inset-0 border-2 border-primary/30 rounded-full animate-pulse" />
-            <div className="absolute inset-8 border-2 border-secondary/30 rounded-full animate-pulse delay-75" />
-            <div className="absolute inset-16 border-2 border-accent/30 rounded-full animate-pulse delay-150" />
-          </div>
+      {/* DNA Helix Animation */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute w-[800px] h-[800px] -top-1/4 -right-1/4 animate-dna-spin opacity-20">
+          <div className="absolute inset-0 border border-primary border-opacity-20 rounded-full" />
+          <div className="absolute inset-[100px] border border-secondary border-opacity-20 rounded-full" />
+          <div className="absolute inset-[200px] border border-accent border-opacity-20 rounded-full" />
+        </div>
+        <div className="absolute w-[600px] h-[600px] -bottom-1/4 -left-1/4 animate-dna-spin opacity-20">
+          <div className="absolute inset-0 border border-primary border-opacity-20 rounded-full" />
+          <div className="absolute inset-[75px] border border-secondary border-opacity-20 rounded-full" />
+          <div className="absolute inset-[150px] border border-accent border-opacity-20 rounded-full" />
         </div>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-8">
-        <div className="text-center space-y-8">
-          {/* Title */}
-          <div className="space-y-4">
-            <h1 className="text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent animate-gene-pulse">
-              You-Gene
-            </h1>
-            <h2 className="text-3xl text-gray-400 font-light tracking-wide">
-              Monster Fusion Frontier
-            </h2>
+      {/* Main Content Container */}
+      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="flex flex-col items-center justify-center space-y-16">
+          {/* Title Section */}
+          <div className="w-full text-center space-y-8">
+            <div className="space-y-4">
+              <h1 className="text-6xl sm:text-7xl lg:text-8xl font-bold gradient-text inline-block">
+                You-Gene
+              </h1>
+              <h2 className="text-xl sm:text-2xl lg:text-3xl text-gray-300 font-light tracking-wider">
+                Monster Fusion Frontier
+              </h2>
+            </div>
+            <p className="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto">
+              Embark on a journey of genetic discovery. Collect, fuse, and battle unique monsters in this innovative game of genetic engineering.
+            </p>
           </div>
-
-          {/* Description */}
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            Embark on a journey of genetic discovery. Collect, fuse, and battle unique monsters in this innovative game of genetic engineering.
-          </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-            <Link
-              to="/hub"
-              className="group relative px-8 py-4 bg-primary hover:bg-primary/90 text-white rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-primary/30"
-            >
-              <span className="relative z-10 text-lg font-semibold">Enter Lab</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </Link>
-            <Link
-              to="/profile"
-              className="group relative px-8 py-4 bg-secondary hover:bg-secondary/90 text-white rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-secondary/30"
-            >
-              <span className="relative z-10 text-lg font-semibold">Researcher Profile</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-secondary to-accent rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </Link>
+          <div className="w-full max-w-lg mx-auto">
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Link
+                to="/hub"
+                className="flex-1 px-8 py-4 bg-primary bg-opacity-90 hover:bg-opacity-100 text-white rounded-xl transition-all duration-300 text-center"
+              >
+                <span className="text-lg font-semibold">Enter Lab</span>
+              </Link>
+              <Link
+                to="/profile"
+                className="flex-1 px-8 py-4 glass text-white rounded-xl transition-all duration-300 text-center"
+              >
+                <span className="text-lg font-semibold">Researcher Profile</span>
+              </Link>
+            </div>
           </div>
 
-          {/* Feature Highlights */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700/50">
-              <div className="text-2xl mb-4">🧬</div>
-              <h3 className="text-xl font-semibold mb-2">Genetic Fusion</h3>
-              <p className="text-gray-400">Create unique monsters by combining genetic traits</p>
+          {/* Feature Cards */}
+          <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="glass rounded-xl p-8 flex flex-col items-center text-center">
+              <div className="text-4xl mb-4">🧬</div>
+              <h3 className="text-xl font-semibold mb-3 text-primary">Genetic Fusion</h3>
+              <p className="text-gray-300">Create unique monsters by combining genetic traits in our state-of-the-art laboratory</p>
             </div>
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700/50">
-              <div className="text-2xl mb-4">⚔️</div>
-              <h3 className="text-xl font-semibold mb-2">Strategic Battles</h3>
-              <p className="text-gray-400">Test your creations in tactical battles</p>
+            <div className="glass rounded-xl p-8 flex flex-col items-center text-center">
+              <div className="text-4xl mb-4">⚔️</div>
+              <h3 className="text-xl font-semibold mb-3 text-secondary">Strategic Battles</h3>
+              <p className="text-gray-300">Test your creations in tactical battles against other researchers</p>
             </div>
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700/50">
-              <div className="text-2xl mb-4">🌍</div>
-              <h3 className="text-xl font-semibold mb-2">World Exploration</h3>
-              <p className="text-gray-400">Discover new species in diverse biomes</p>
+            <div className="glass rounded-xl p-8 flex flex-col items-center text-center">
+              <div className="text-4xl mb-4">🌍</div>
+              <h3 className="text-xl font-semibold mb-3 text-accent">World Exploration</h3>
+              <p className="text-gray-300">Discover new species across diverse biomes and expand your collection</p>
             </div>
           </div>
         </div>
