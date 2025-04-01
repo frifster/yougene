@@ -1,7 +1,6 @@
 [build]
 builder = "nixpacks"
 nixpacksConfig = { node_version = "18" }
-setup = ["npm install -g pnpm@latest"]
 buildCommand = "npm install && npm run build"
 
 [deploy]
