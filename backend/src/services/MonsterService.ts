@@ -1,4 +1,4 @@
-import Monster, { IMonster } from '../models/Monster';
+import Monster, { IMonster } from '../models/Monster.js';
 
 export class MonsterService {
   async createMonster(monsterData: Partial<IMonster>): Promise<IMonster> {

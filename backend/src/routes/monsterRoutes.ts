@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { MonsterController } from '../controllers/MonsterController';
+import { MonsterController } from '../controllers/MonsterController.js';
 
 const router = Router();
 const monsterController = new MonsterController();

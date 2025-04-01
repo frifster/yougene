@@ -1,5 +1,5 @@
-import Monster, { IMonster } from '../models/Monster';
-import { AppError } from '../utils/AppError';
+import Monster, { IMonster } from '../models/Monster.js';
+import { AppError } from '../utils/AppError.js';
 
 export class BreedingService {
   static async breedMonsters(parent1Id: string, parent2Id: string): Promise<IMonster> {

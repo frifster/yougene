@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { BattleAction, BattleLog, BattleState, Character } from '../models/battle';
+import { BattleAction, BattleLog, BattleState, Character } from '../models/battle.js';
 
 export class BattleService {
   private battles: Map<string, BattleState> = new Map();

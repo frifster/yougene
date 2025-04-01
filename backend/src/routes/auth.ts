@@ -1,7 +1,7 @@
 import express from 'express';
 import { z } from 'zod';
-import { getCurrentUser, login, logout, register } from '../controllers/authController';
-import { protect } from '../middleware/auth';
+import { getCurrentUser, login, logout, register } from '../controllers/authController.js';
+import { protect } from '../middleware/auth.js';
 
 const router = express.Router();
 
