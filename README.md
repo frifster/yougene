@@ -117,15 +117,26 @@ pnpm dev
 
 ## License
 
+⚠️ **IMPORTANT NOTICE** ⚠️
+
+While this repository is publicly visible, it is NOT open source. This software is released under a proprietary "Source Available" license.
+
 Copyright © 2024 You-Gene. All rights reserved.
 
-This software and associated documentation files (the "Software") are proprietary and confidential. 
-The Software is protected by copyright laws and international copyright treaties, as well as other 
-intellectual property laws and treaties.
+**Permitted Uses:**
+- Viewing source code for educational purposes
+- Cloning for personal, non-commercial development and testing
+- Submitting issues and pull requests
 
-Unauthorized copying, distribution, modification, public display, or public performance of this 
-Software, or creating derivative works from this Software is strictly prohibited. This includes 
-any text, images, or other media files included with the Software.
+**Prohibited Uses:**
+- Commercial use without a license
+- Distribution or sharing
+- Creating derivative works
+- Using trademarks or branding
+
+For full license terms, see the [LICENSE](LICENSE) file.
+
+For commercial licensing inquiries, please contact: [Your Contact Information]
 
 ## Acknowledgments
 

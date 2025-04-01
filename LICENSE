@@ -5,39 +5,63 @@ You-Gene Software License Agreement
 "Software" refers to You-Gene, including all source code, documentation, assets, and associated materials.
 "Licensor" refers to the copyright holders and creators of You-Gene.
 "User" refers to any person or entity accessing or using the Software.
+"Source Available" means that while the source code is publicly visible, it is not open source and has restricted usage rights.
 
-2. Proprietary Rights
+2. Source Available Notice
+
+While this Software's source code is publicly visible, this is NOT an open-source license. The Software remains proprietary and is provided as "Source Available" for educational and evaluation purposes only.
+
+3. Proprietary Rights
 
 The Software is the proprietary property of the Licensor and is protected by copyright laws and international treaty provisions. The Licensor retains all rights, title, and interest in and to the Software, including all intellectual property rights.
 
-3. Restrictions
+4. Limited License Grant
+
+Licensor grants User a non-exclusive, non-transferable, revocable license to:
+a) View the source code for educational and evaluation purposes only
+b) Clone the repository for personal, non-commercial development and testing
+c) Report issues and submit pull requests to improve the Software
+
+5. Restrictions
 
 Users may not:
-a) Copy, modify, or distribute the Software
-b) Decompile, reverse engineer, or disassemble the Software
-c) Remove or alter any proprietary notices or marks on the Software
-d) Use the Software for commercial purposes without explicit written permission
-e) Create derivative works based on the Software
-f) Transfer any rights granted under this License
+a) Use the Software or any part of it for commercial purposes
+b) Distribute, sublicense, or make the Software available to third parties
+c) Create derivative works or competing products based on the Software
+d) Remove or alter any proprietary notices or marks on the Software
+e) Use the Software's name, trademarks, or branding
+f) Patent any features or technology contained in the Software
 
-4. Confidentiality
+6. Contributions
 
-The Software contains trade secrets and proprietary information of the Licensor. Users agree to maintain the confidentiality of the Software and not disclose any confidential information to third parties.
+By submitting contributions (pull requests, patches, or other modifications), you:
+a) Agree to license your contributions under these same terms
+b) Grant Licensor a perpetual, worldwide, non-exclusive, royalty-free license to use your contributions
+c) Confirm you have the right to grant such license
 
-5. No Warranty
+7. Confidentiality
+
+Despite the public availability of the source code, Users agree to:
+a) Treat any non-public information about the Software as confidential
+b) Not disclose any security vulnerabilities except through private channels
+c) Not share access credentials or private deployment details
+
+8. No Warranty
 
 The Software is provided "AS IS" without warranty of any kind, either express or implied, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose.
 
-6. Limitation of Liability
+9. Limitation of Liability
 
 In no event shall the Licensor be liable for any damages whatsoever arising out of the use of or inability to use the Software.
 
-7. Termination
+10. Termination
 
-This License is effective until terminated. The License will terminate immediately without notice if User fails to comply with any provision of this License.
+This License is effective until terminated. The License will terminate immediately without notice if User fails to comply with any provision of this License. Upon termination, User must destroy all copies of the Software.
 
-8. General
+11. General
 
-This License represents the complete agreement concerning the Software between User and Licensor.
+This License represents the complete agreement concerning the Software between User and Licensor. If any provision is found to be unenforceable, such provision shall be modified only to the extent necessary to make it enforceable.
 
-Copyright © 2024 You-Gene. All rights reserved. 
+Copyright © 2024 You-Gene. All rights reserved.
+
+For commercial licensing inquiries, please contact: [Your Contact Information] 
