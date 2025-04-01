@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { useProgress } from '../../contexts/ProgressContext';
+import { useAuth } from '../../contexts/hooks/useAuth';
+import { useProgress } from '../../contexts/hooks/useProgress';
+
+interface LocationState {
+  from?: {
+    pathname: string;
+  };
+}
 
 export const LoginForm = () => {
   const [email, setEmail] = useState('');
@@ -19,10 +25,11 @@ export const LoginForm = () => {
 
     try {
       await login(email, password);
-      const from = (location.state as any)?.from?.pathname || '/game-hub';
+      const from = (location.state as LocationState)?.from?.pathname || '/game-hub';
       navigate(from, { replace: true });
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'An error occurred during login');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred during login';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

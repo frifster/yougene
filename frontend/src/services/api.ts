@@ -2,6 +2,20 @@ import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { store } from '../store';
 import { logout } from '../store/slices/authSlice';
 
+interface ProfileData {
+  username?: string;
+  email?: string;
+  avatar?: string;
+}
+
+interface MonsterData {
+  name: string;
+  type: string;
+  level: number;
+  geneticStability: number;
+  genes: string[];
+}
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api',
   headers: {
@@ -41,15 +55,15 @@ export const authAPI = {
     api.post('/auth/register', { username, email, password }),
   logout: () => api.post('/auth/logout'),
   getProfile: () => api.get('/auth/profile'),
-  updateProfile: (data: any) => api.put('/auth/profile', data),
+  updateProfile: (data: ProfileData) => api.put('/auth/profile', data),
 };
 
 // Monster endpoints
 export const monsterAPI = {
   getCollection: () => api.get('/monsters/collection'),
   getMonster: (id: string) => api.get(`/monsters/${id}`),
-  createMonster: (data: any) => api.post('/monsters', data),
-  updateMonster: (id: string, data: any) => api.put(`/monsters/${id}`, data),
+  createMonster: (data: MonsterData) => api.post('/monsters', data),
+  updateMonster: (id: string, data: Partial<MonsterData>) => api.put(`/monsters/${id}`, data),
   deleteMonster: (id: string) => api.delete(`/monsters/${id}`),
   fuseMonsters: (parent1Id: string, parent2Id: string) =>
     api.post('/monsters/fuse', { parent1Id, parent2Id }),

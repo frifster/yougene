@@ -1,39 +1,23 @@
 import axios from 'axios';
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { authService, User } from '../services/auth.service';
-
-interface AuthContextType {
-  user: User | null;
-  isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (username: string, email: string, password: string) => Promise<void>;
-  logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+import React, { useEffect, useState } from 'react';
+import { authService } from '../services/auth.service';
+import { AuthContext } from './contexts/auth';
+import { User } from './types/auth';
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const token = localStorage.getItem('token');
-        if (token) {
+        const storedToken = localStorage.getItem('token');
+        if (storedToken) {
           // Verify token and get user data
           const userData = await authService.getCurrentUser();
           setUser(userData);
-          setIsAuthenticated(true);
+          setToken(storedToken);
         }
       } catch (error) {
         // Only remove token if it's an authentication error
@@ -41,7 +25,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           localStorage.removeItem('token');
         }
         setUser(null);
-        setIsAuthenticated(false);
+        setToken(null);
       } finally {
         setIsLoading(false);
       }
@@ -51,34 +35,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async (email: string, password: string) => {
-    const userData = await authService.login(email, password);
-    setUser(userData);
-    setIsAuthenticated(true);
+    const { token, user } = await authService.login(email, password);
+    localStorage.setItem('token', token);
+    setToken(token);
+    setUser(user);
   };
 
   const register = async (username: string, email: string, password: string) => {
-    const userData = await authService.register(username, email, password);
-    setUser(userData);
-    setIsAuthenticated(true);
+    const { token, user } = await authService.register(username, email, password);
+    localStorage.setItem('token', token);
+    setToken(token);
+    setUser(user);
   };
 
   const logout = () => {
-    authService.logout();
+    localStorage.removeItem('token');
+    setToken(null);
     setUser(null);
-    setIsAuthenticated(false);
+  };
+
+  const value = {
+    user,
+    token,
+    login,
+    register,
+    logout,
+    isAuthenticated: !!token,
   };
 
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-      </div>
-    );
+    return <div>Loading...</div>;
   }
 
-  return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, register, logout }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

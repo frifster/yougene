@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { useProgress } from '../../contexts/ProgressContext';
+import { useAuth } from '../../contexts/hooks/useAuth';
+import { useProgress } from '../../contexts/hooks/useProgress';
 
 export const RegisterForm = () => {
   const [username, setUsername] = useState('');
@@ -30,8 +30,9 @@ export const RegisterForm = () => {
       await register(username, email, password);
       setRegisteredEmail(email);
       setSuccess(true);
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'An error occurred during registration');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred during registration';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

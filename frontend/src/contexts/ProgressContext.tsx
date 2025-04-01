@@ -1,26 +1,13 @@
-import { createContext, ReactNode, useContext, useState } from 'react';
-
-interface ProgressContextType {
-  isLoading: boolean;
-  setIsLoading: (loading: boolean) => void;
-}
-
-const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
+import { ReactNode, useState } from 'react';
+import { ProgressContext } from './contexts/progress';
 
 export const ProgressProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   return (
-    <ProgressContext.Provider value={{ isLoading, setIsLoading }}>
+    <ProgressContext.Provider value={{ isLoading, setIsLoading, progress, setProgress }}>
       {children}
     </ProgressContext.Provider>
   );
-};
-
-export const useProgress = () => {
-  const context = useContext(ProgressContext);
-  if (context === undefined) {
-    throw new Error('useProgress must be used within a ProgressProvider');
-  }
-  return context;
 };
