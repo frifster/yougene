@@ -5,7 +5,7 @@ const GameHub: React.FC = () => {
   return (
     <div className="min-h-screen bg-background text-text p-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">You-Gene Lab</h1>
+        <h1 className="text-4xl font-bold mb-8">YouGene Lab</h1>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Exploration Map */}

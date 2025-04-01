@@ -1,6 +1,6 @@
 # YouGene: Monster Fusion Frontier
 
-A web-based monster collection, breeding, and battle game featuring interactive 3D graphics. Players explore various biomes to catch wild monsters, then use the revolutionary "You-Gene Technology" to breed and fuse them into powerful new creatures.
+A web-based monster collection, breeding, and battle game featuring interactive 3D graphics. Players explore various biomes to catch wild monsters, then use the revolutionary "YouGene Technology" to breed and fuse them into powerful new creatures.
 
 ## Project Structure
 
@@ -86,10 +86,10 @@ pnpm dev
 
 ## Development Roadmap
 
-### Phase 1: Basic You-Gene System
+### Phase 1: Basic YouGene System
 - Core game loop implementation
 - 30 starter monsters with basic genetics
-- Simple You-Gene breeding mechanics
+- Simple YouGene breeding mechanics
 - One exploration zone
 - Basic battle system
 
@@ -102,7 +102,7 @@ pnpm dev
 
 ### Phase 3: Full Gene-sis
 - Complete monster collection (120+ creatures)
-- Advanced You-Gene fusion system
+- Advanced YouGene fusion system
 - All exploration zones
 - Tournament system
 - Cross-player breeding marketplace
@@ -121,7 +121,7 @@ pnpm dev
 
 While this repository is publicly visible, it is NOT open source. This software is released under a proprietary "Source Available" license.
 
-Copyright © 2025 You-Gene. All rights reserved.
+Copyright © 2025 YouGene. All rights reserved.
 
 **Permitted Uses:**
 - Viewing source code for educational purposes

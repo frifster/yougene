@@ -30,7 +30,7 @@ app.use(express.json());
 app.get('/health', (req, res) => {
   res.json({ 
     status: 'ok', 
-    message: 'You-Gene API is running',
+    message: 'YouGene API is running',
     environment: config.nodeEnv
   });
 });
@@ -71,7 +71,7 @@ const startServer = async () => {
   try {
     await connectDB();
     httpServer.listen(config.port, () => {
-      console.log(`You-Gene API server running on port ${config.port}`);
+      console.log(`YouGene API server running on port ${config.port}`);
       console.log(`Environment: ${config.nodeEnv}`);
     });
   } catch (error) {

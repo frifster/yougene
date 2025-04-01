@@ -1,7 +1,7 @@
 {
   "info": {
-    "name": "You-Gene API",
-    "description": "API collection for You-Gene backend",
+    "name": "YouGene API",
+    "description": "API collection for YouGene backend",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [

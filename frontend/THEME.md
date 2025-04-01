@@ -1,4 +1,4 @@
-# You-Gene Frontend Theme Documentation
+# YouGene Frontend Theme Documentation
 
 ## Color System
 

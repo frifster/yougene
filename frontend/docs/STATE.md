@@ -2,7 +2,7 @@
 
 ## Overview
 
-You-Gene uses Redux Toolkit for global state management, with a focus on type safety and performance. The store is organized into feature-based slices for better maintainability.
+YouGene uses Redux Toolkit for global state management, with a focus on type safety and performance. The store is organized into feature-based slices for better maintainability.
 
 ## Store Structure
 

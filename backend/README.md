@@ -1,6 +1,6 @@
-# You-Gene Backend
+# YouGene Backend
 
-The backend service for You-Gene, handling game logic, data persistence, and real-time features.
+The backend service for YouGene, handling game logic, data persistence, and real-time features.
 
 ## Tech Stack
 
@@ -117,7 +117,7 @@ POST /api/v1/breeding/breed
 
 ## Development TODOs
 
-### Phase 1: Basic You-Gene System
+### Phase 1: Basic YouGene System
 - [x] Set up basic Express server with TypeScript
 - [x] Implement error handling middleware
 - [x] Set up environment configuration
