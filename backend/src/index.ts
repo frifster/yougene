@@ -6,6 +6,7 @@ import { connectDB } from './config/database.js';
 import { config } from './config/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import authRoutes from './routes/auth.js';
+import monsterRoutes from './routes/monsterRoutes.js';
 
 // Initialize Express app
 const app = express();
@@ -34,6 +35,7 @@ app.get('/health', (req, res) => {
 
 // API Routes
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/monsters', monsterRoutes);
 
 // Monsters route (to be implemented)
 app.use('/api/v1/monsters', (req, res) => {
