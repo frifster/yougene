@@ -5,24 +5,30 @@ The backend service for You-Gene, handling game logic, data persistence, and rea
 ## Tech Stack
 
 - Node.js with Express
+- TypeScript for type safety
 - MongoDB for database
 - JWT for authentication
 - Socket.io for real-time features
-- TypeScript for type safety
+- Zod for request validation
 
 ## Project Structure
 
 ```
 backend/
 ├── src/
-│   ├── controllers/  # Route controllers
-│   ├── models/       # Database models
-│   ├── routes/       # API routes
-│   ├── services/     # Business logic
-│   └── utils/        # Utility functions
-├── tests/            # Test files
-├── package.json
-└── tsconfig.json
+│   ├── config/        # Configuration and environment variables
+│   ├── controllers/   # Route controllers
+│   ├── middleware/    # Express middleware
+│   ├── models/        # Database models
+│   ├── routes/        # API routes
+│   ├── services/      # Business logic
+│   ├── utils/         # Utility functions
+│   └── index.ts       # Application entry point
+├── tests/             # Test files
+├── .env               # Environment variables
+├── .env.example       # Example environment variables
+├── package.json       # Project dependencies
+└── tsconfig.json      # TypeScript configuration
 ```
 
 ## Getting Started
@@ -50,23 +56,30 @@ cp .env.example .env
 pnpm dev
 ```
 
-## API Documentation
+## API Endpoints
 
-The API documentation is available at `/api-docs` when running the server in development mode.
+### Health Check
+- `GET /health` - Check API status
+
+### API Routes (Coming Soon)
+- `/api/v1/monsters` - Monster management
+- `/api/v1/auth` - Authentication
 
 ## Development TODOs
 
 ### Phase 1: Basic You-Gene System
-- [ ] Set up basic Express server with TypeScript
-- [ ] Implement MongoDB connection and basic models
+- [x] Set up basic Express server with TypeScript
+- [x] Implement error handling middleware
+- [x] Set up environment configuration
+- [x] Configure CORS and basic middleware
+- [x] Set up Socket.IO for real-time features
+- [ ] Implement MongoDB connection
 - [ ] Create authentication system with JWT
 - [ ] Implement basic monster CRUD operations
-- [ ] Set up Socket.io for real-time features
 - [ ] Create basic battle system API
 - [ ] Implement simple breeding mechanics
 - [ ] Add basic exploration zone endpoints
-- [ ] Set up error handling middleware
-- [ ] Add request validation
+- [ ] Add request validation with Zod
 - [ ] Implement basic rate limiting
 
 ### Phase 2: Genetic Expansion
@@ -93,12 +106,32 @@ The API documentation is available at `/api-docs` when running the server in dev
 - [ ] Set up monitoring and logging
 - [ ] Add performance optimizations
 
-## Testing
+## Environment Variables
 
-Run tests with:
-```bash
-pnpm test
+Required environment variables in `.env`:
 ```
+PORT=3000
+NODE_ENV=development
+FRONTEND_URL=http://localhost:5173
+MONGODB_URI=mongodb://localhost:27017/yougene
+JWT_SECRET=your-secret-key-change-in-production
+JWT_EXPIRES_IN=7d
+```
+
+## Development Scripts
+
+- `pnpm dev` - Start development server with hot reload
+- `pnpm build` - Build TypeScript files
+- `pnpm start` - Start production server
+- `pnpm lint` - Run ESLint
+- `pnpm test` - Run tests with Vitest
+
+## Error Handling
+
+The application uses a custom error handling system:
+- `AppError` class for operational errors
+- Global error handler middleware
+- Standardized error response format
 
 ## Contributing
 
