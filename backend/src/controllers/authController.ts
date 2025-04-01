@@ -90,4 +90,20 @@ export const getCurrentUser = async (req: AuthRequest, res: Response, next: Next
     console.error('Error fetching current user:', error);
     next(error);
   }
+};
+
+export const logout = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    // Increment token version to invalidate all existing tokens
+    await User.findByIdAndUpdate(req.user?.id, {
+      $inc: { tokenVersion: 1 }
+    });
+
+    res.json({
+      status: 'success',
+      message: 'Logged out successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
 }; 

@@ -28,6 +28,11 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
       throw new AppError('User not found', 401);
     }
 
+    // Check if token version matches
+    if (user.tokenVersion !== decoded.tokenVersion) {
+      throw new AppError('Token has been invalidated', 401);
+    }
+
     // Attach user to request
     req.user = user;
     next();

@@ -1,6 +1,6 @@
 import express from 'express';
 import { z } from 'zod';
-import { getCurrentUser, login, register } from '../controllers/authController';
+import { getCurrentUser, login, logout, register } from '../controllers/authController';
 import { protect } from '../middleware/auth';
 
 const router = express.Router();
@@ -40,5 +40,8 @@ router.post('/login', async (req, res, next) => {
 
 // Protected route
 router.get('/me', protect, getCurrentUser);
+
+// Logout route
+router.post('/logout', protect, logout);
 
 export default router; 

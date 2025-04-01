@@ -13,6 +13,7 @@ export const generateToken = (user: IUser): string => {
     id: user._id,
     username: user.username,
     email: user.email,
+    tokenVersion: user.tokenVersion,
   };
 
   const options: SignOptions = {
