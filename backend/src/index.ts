@@ -2,6 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { connectDB } from './config/database.js';
 import { config } from './config/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
 
@@ -59,8 +60,18 @@ app.use('*', (req, res) => {
   });
 });
 
-// Start server
-httpServer.listen(config.port, () => {
-  console.log(`You-Gene API server running on port ${config.port}`);
-  console.log(`Environment: ${config.nodeEnv}`);
-}); 
+// Connect to MongoDB and start server
+const startServer = async () => {
+  try {
+    await connectDB();
+    httpServer.listen(config.port, () => {
+      console.log(`You-Gene API server running on port ${config.port}`);
+      console.log(`Environment: ${config.nodeEnv}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer(); 
