@@ -45,7 +45,7 @@ const LandingPage: React.FC = () => {
           <div className="w-full max-w-lg mx-auto">
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link
-                to="/hub"
+                to="/game-hub"
                 className="flex-1 px-8 py-4 bg-white text-primary font-semibold rounded-xl transition-all duration-300 text-center shadow-xl hover:shadow-white/20 hover:bg-white/90"
               >
                 <span className="text-lg">Enter Lab</span>
