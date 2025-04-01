@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Card, Container, Grid } from '../components/layout';
 
 interface Monster {
   id: string;
@@ -105,141 +106,139 @@ const BattleArena: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-text p-8">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Battle Arena</h1>
+    <Container>
+      <h1 className="text-4xl font-bold mb-8 text-text drop-shadow-lg">Battle Arena</h1>
 
-        {battleState.status === 'selecting' ? (
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h2 className="text-2xl font-semibold mb-4">Select Your Monster</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {availableMonsters.map(monster => (
-                <button
-                  key={monster.id}
-                  onClick={() => startBattle(monster)}
-                  className="p-4 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors text-left"
-                >
-                  <div className="font-semibold">{monster.name}</div>
-                  <div className="text-sm text-gray-400">{monster.type}</div>
-                  <div className="mt-2 text-sm">Level: {monster.level}</div>
-                </button>
-              ))}
-            </div>
-          </div>
-        ) : battleState.status === 'battling' &&
-          battleState.playerMonster &&
-          battleState.opponentMonster ? (
-          <div className="space-y-8">
-            {/* Battle Field */}
-            <div className="grid grid-cols-2 gap-8">
-              {/* Player Monster */}
-              <div className="bg-gray-800 rounded-lg p-6">
-                <h2 className="text-2xl font-semibold mb-4">Your Monster</h2>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-start">
-                    <h3 className="text-xl">{battleState.playerMonster.name}</h3>
-                    <span className="px-2 py-1 bg-primary/20 rounded text-sm">
-                      {battleState.playerMonster.type}
-                    </span>
+      {battleState.status === 'selecting' ? (
+        <Card>
+          <h2 className="text-2xl font-semibold mb-4 text-text">Select Your Monster</h2>
+          <Grid cols={3} gap="md">
+            {availableMonsters.map(monster => (
+              <button
+                key={monster.id}
+                onClick={() => startBattle(monster)}
+                className="p-4 bg-white/10 backdrop-blur-lg rounded-xl hover:bg-white/20 transition-all duration-300 text-left"
+              >
+                <div className="font-semibold text-text">{monster.name}</div>
+                <div className="text-sm text-text/60">{monster.type}</div>
+                <div className="mt-2 text-sm text-text/80">Level: {monster.level}</div>
+              </button>
+            ))}
+          </Grid>
+        </Card>
+      ) : battleState.status === 'battling' &&
+        battleState.playerMonster &&
+        battleState.opponentMonster ? (
+        <div className="space-y-8">
+          {/* Battle Field */}
+          <Grid cols={2} gap="lg">
+            {/* Player Monster */}
+            <Card>
+              <h2 className="text-2xl font-semibold mb-4 text-text">Your Monster</h2>
+              <div className="space-y-4">
+                <div className="flex justify-between items-start">
+                  <h3 className="text-xl text-text">{battleState.playerMonster.name}</h3>
+                  <span className="px-2 py-1 bg-primary/20 rounded text-sm text-primary">
+                    {battleState.playerMonster.type}
+                  </span>
+                </div>
+                <div className="space-y-2 text-text/80">
+                  <div className="flex justify-between">
+                    <span>Level:</span>
+                    <span>{battleState.playerMonster.level}</span>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span>Level:</span>
-                      <span>{battleState.playerMonster.level}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Turn:</span>
-                      <span>{battleState.turn}</span>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Abilities:</h3>
-                    <div className="grid grid-cols-2 gap-2">
-                      {battleState.playerMonster.abilities.map(ability => (
-                        <button
-                          key={ability}
-                          className="p-2 bg-secondary/20 rounded hover:bg-secondary/30 transition-colors"
-                        >
-                          {ability}
-                        </button>
-                      ))}
-                    </div>
+                  <div className="flex justify-between">
+                    <span>Turn:</span>
+                    <span>{battleState.turn}</span>
                   </div>
                 </div>
-              </div>
-
-              {/* Opponent Monster */}
-              <div className="bg-gray-800 rounded-lg p-6">
-                <h2 className="text-2xl font-semibold mb-4">Opponent</h2>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-start">
-                    <h3 className="text-xl">{battleState.opponentMonster.name}</h3>
-                    <span className="px-2 py-1 bg-primary/20 rounded text-sm">
-                      {battleState.opponentMonster.type}
-                    </span>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span>Level:</span>
-                      <span>{battleState.opponentMonster.level}</span>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Abilities:</h3>
-                    <div className="grid grid-cols-2 gap-2">
-                      {battleState.opponentMonster.abilities.map(ability => (
-                        <div key={ability} className="p-2 bg-gray-700 rounded">
-                          {ability}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                <div>
+                  <h3 className="font-semibold mb-2 text-text">Abilities:</h3>
+                  <Grid cols={2} gap="sm">
+                    {battleState.playerMonster.abilities.map(ability => (
+                      <button
+                        key={ability}
+                        className="p-2 bg-secondary/20 rounded hover:bg-secondary/30 transition-colors text-text"
+                      >
+                        {ability}
+                      </button>
+                    ))}
+                  </Grid>
                 </div>
               </div>
-            </div>
+            </Card>
 
-            {/* Battle Controls */}
-            <div className="bg-gray-800 rounded-lg p-6">
-              <h2 className="text-2xl font-semibold mb-4">Battle Controls</h2>
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  onClick={() => endBattle('win')}
-                  className="bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg transition-colors"
-                >
-                  End Battle (Win)
-                </button>
-                <button
-                  onClick={() => endBattle('loss')}
-                  className="bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg transition-colors"
-                >
-                  End Battle (Loss)
-                </button>
+            {/* Opponent Monster */}
+            <Card>
+              <h2 className="text-2xl font-semibold mb-4 text-text">Opponent</h2>
+              <div className="space-y-4">
+                <div className="flex justify-between items-start">
+                  <h3 className="text-xl text-text">{battleState.opponentMonster.name}</h3>
+                  <span className="px-2 py-1 bg-primary/20 rounded text-sm text-primary">
+                    {battleState.opponentMonster.type}
+                  </span>
+                </div>
+                <div className="space-y-2 text-text/80">
+                  <div className="flex justify-between">
+                    <span>Level:</span>
+                    <span>{battleState.opponentMonster.level}</span>
+                  </div>
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-2 text-text">Abilities:</h3>
+                  <Grid cols={2} gap="sm">
+                    {battleState.opponentMonster.abilities.map(ability => (
+                      <div key={ability} className="p-2 bg-white/10 rounded text-text/80">
+                        {ability}
+                      </div>
+                    ))}
+                  </Grid>
+                </div>
               </div>
-            </div>
-          </div>
-        ) : battleState.status === 'finished' && battleState.result ? (
-          <div className="bg-gray-800 rounded-lg p-6 text-center">
-            <h2 className="text-2xl font-semibold mb-4">
-              Battle {battleState.result === 'win' ? 'Victory' : 'Defeat'}!
-            </h2>
-            <button
-              onClick={() =>
-                setBattleState({
-                  playerMonster: null,
-                  opponentMonster: null,
-                  turn: 1,
-                  status: 'selecting',
-                  result: null,
-                })
-              }
-              className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg transition-colors"
-            >
-              Start New Battle
-            </button>
-          </div>
-        ) : null}
-      </div>
-    </div>
+            </Card>
+          </Grid>
+
+          {/* Battle Controls */}
+          <Card>
+            <h2 className="text-2xl font-semibold mb-4 text-text">Battle Controls</h2>
+            <Grid cols={2} gap="md">
+              <button
+                onClick={() => endBattle('win')}
+                className="bg-primary hover:bg-primary-dark text-white py-3 rounded-xl transition-colors shadow-xl hover:shadow-primary/20"
+              >
+                End Battle (Win)
+              </button>
+              <button
+                onClick={() => endBattle('loss')}
+                className="bg-accent hover:bg-accent/90 text-white py-3 rounded-xl transition-colors shadow-xl hover:shadow-accent/20"
+              >
+                End Battle (Loss)
+              </button>
+            </Grid>
+          </Card>
+        </div>
+      ) : battleState.status === 'finished' && battleState.result ? (
+        <Card>
+          <h2 className="text-2xl font-semibold mb-4 text-text">
+            Battle {battleState.result === 'win' ? 'Victory' : 'Defeat'}!
+          </h2>
+          <button
+            onClick={() =>
+              setBattleState({
+                playerMonster: null,
+                opponentMonster: null,
+                turn: 1,
+                status: 'selecting',
+                result: null,
+              })
+            }
+            className="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-xl transition-colors shadow-xl hover:shadow-primary/20"
+          >
+            Start New Battle
+          </button>
+        </Card>
+      ) : null}
+    </Container>
   );
 };
 

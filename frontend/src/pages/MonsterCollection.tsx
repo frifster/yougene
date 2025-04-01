@@ -1,4 +1,5 @@
 import React from 'react';
+import { Container } from '../components/layout';
 import MonsterGrid from '../components/monsters/MonsterGrid';
 import { Monster } from '../store/slices/monsterSlice';
 
@@ -45,8 +46,7 @@ const MonsterCollection: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background text-text p-8">
-      <div className="max-w-7xl mx-auto">
+    <Container>
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold">Monster Collection</h1>
           <div className="text-text/60">{monsters.length} Monsters</div>
@@ -58,8 +58,7 @@ const MonsterCollection: React.FC = () => {
           showStats={true}
           size="md"
         />
-      </div>
-    </div>
+    </Container>
   );
 };
 
