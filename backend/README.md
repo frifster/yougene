@@ -73,7 +73,7 @@ pnpm dev
 - [x] Set up environment configuration
 - [x] Configure CORS and basic middleware
 - [x] Set up Socket.IO for real-time features
-- [ ] Implement MongoDB connection
+- [x] Implement MongoDB connection
 - [ ] Create authentication system with JWT
 - [ ] Implement basic monster CRUD operations
 - [ ] Create basic battle system API
