@@ -121,7 +121,7 @@ pnpm dev
 
 While this repository is publicly visible, it is NOT open source. This software is released under a proprietary "Source Available" license.
 
-Copyright © 2024 You-Gene. All rights reserved.
+Copyright © 2025 You-Gene. All rights reserved.
 
 **Permitted Uses:**
 - Viewing source code for educational purposes
@@ -136,7 +136,7 @@ Copyright © 2024 You-Gene. All rights reserved.
 
 For full license terms, see the [LICENSE](LICENSE) file.
 
-For commercial licensing inquiries, please contact: [Your Contact Information]
+For commercial licensing inquiries, please contact: avilaeugeneb@gmail.com
 
 ## Acknowledgments
 
