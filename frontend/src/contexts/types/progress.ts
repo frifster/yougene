@@ -3,4 +3,4 @@ export interface ProgressContextType {
   setIsLoading: (loading: boolean) => void;
   progress: number;
   setProgress: (progress: number) => void;
-} 
+}

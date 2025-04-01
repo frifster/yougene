@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ProgressContext } from '../ProgressContext';
+import { ProgressContext } from '../contexts/progress';
 import { ProgressContextType } from '../types/progress';
 
 export const useProgress = (): ProgressContextType => {
@@ -8,4 +8,4 @@ export const useProgress = (): ProgressContextType => {
     throw new Error('useProgress must be used within a ProgressProvider');
   }
   return context;
-}; 
+};

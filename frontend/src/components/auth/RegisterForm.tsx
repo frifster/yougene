@@ -31,7 +31,8 @@ export const RegisterForm = () => {
       setRegisteredEmail(email);
       setSuccess(true);
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'An error occurred during registration';
+      const errorMessage =
+        err instanceof Error ? err.message : 'An error occurred during registration';
       setError(errorMessage);
     } finally {
       setIsLoading(false);

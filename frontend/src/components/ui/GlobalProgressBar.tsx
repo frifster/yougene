@@ -1,45 +1,27 @@
 import { useEffect, useState } from 'react';
-import { useProgress } from '../../contexts/ProgressContext';
+import { useProgress } from '../../contexts/hooks/useProgress';
 
 export const GlobalProgressBar = () => {
   const { isLoading } = useProgress();
-  const [progress, setProgress] = useState(0);
+  const [displayProgress, setDisplayProgress] = useState(0);
 
   useEffect(() => {
-    let interval: ReturnType<typeof setTimeout>;
-
     if (isLoading) {
-      setProgress(0);
-      interval = setInterval(() => {
-        setProgress(prev => {
-          if (prev >= 90) {
-            clearInterval(interval);
-            return 90;
-          }
-          return prev + 2;
-        });
-      }, 200);
+      setDisplayProgress((prev: number) => Math.min(prev + 10, 90));
     } else {
-      setProgress(100);
-      setTimeout(() => {
-        setProgress(0);
-      }, 500);
+      setDisplayProgress(100);
+      const timer = setTimeout(() => setDisplayProgress(0), 200);
+      return () => clearTimeout(timer);
     }
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
   }, [isLoading]);
 
-  if (!isLoading && progress === 0) return null;
+  if (!isLoading && displayProgress === 0) return null;
 
   return (
-    <div className="fixed top-0 left-0 w-full h-1 bg-transparent z-[100]">
+    <div className="fixed top-0 left-0 right-0 z-50">
       <div
-        className="h-full bg-primary transition-all duration-500 ease-out"
-        style={{ width: `${progress}%` }}
+        className="h-1 bg-primary transition-all duration-300 ease-out"
+        style={{ width: `${displayProgress}%` }}
       />
     </div>
   );

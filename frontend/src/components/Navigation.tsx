@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useProgress } from '../contexts/ProgressContext';
+import { useAuth } from '../contexts/hooks/useAuth';
+import { useProgress } from '../contexts/hooks/useProgress';
 
 const Navigation: React.FC = () => {
   const location = useLocation();
