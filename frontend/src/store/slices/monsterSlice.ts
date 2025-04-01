@@ -29,7 +29,7 @@ const initialState: MonsterState = {
   collection: [],
   selectedMonster: null,
   loading: false,
-  error: null
+  error: null,
 };
 
 const monsterSlice = createSlice({
@@ -59,8 +59,8 @@ const monsterSlice = createSlice({
     },
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -70,7 +70,7 @@ export const {
   deleteMonster,
   setSelectedMonster,
   setLoading,
-  setError
+  setError,
 } = monsterSlice.actions;
 
-export default monsterSlice.reducer; 
+export default monsterSlice.reducer;

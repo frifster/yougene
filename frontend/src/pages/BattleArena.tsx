@@ -30,7 +30,7 @@ const BattleArena: React.FC = () => {
     opponentMonster: null,
     turn: 1,
     status: 'selecting',
-    result: null
+    result: null,
   });
 
   // This will be replaced with actual Redux state
@@ -47,8 +47,8 @@ const BattleArena: React.FC = () => {
         strength: 45,
         defense: 60,
         agility: 55,
-        intelligence: 50
-      }
+        intelligence: 50,
+      },
     },
     {
       id: '2',
@@ -62,9 +62,9 @@ const BattleArena: React.FC = () => {
         strength: 75,
         defense: 50,
         agility: 70,
-        intelligence: 60
-      }
-    }
+        intelligence: 60,
+      },
+    },
   ];
 
   const generateOpponent = () => {
@@ -81,8 +81,8 @@ const BattleArena: React.FC = () => {
         strength: 60,
         defense: 65,
         agility: 45,
-        intelligence: 55
-      }
+        intelligence: 55,
+      },
     };
   };
 
@@ -92,7 +92,7 @@ const BattleArena: React.FC = () => {
       opponentMonster: generateOpponent(),
       turn: 1,
       status: 'battling',
-      result: null
+      result: null,
     });
   };
 
@@ -100,7 +100,7 @@ const BattleArena: React.FC = () => {
     setBattleState(prev => ({
       ...prev,
       status: 'finished',
-      result
+      result,
     }));
   };
 
@@ -113,7 +113,7 @@ const BattleArena: React.FC = () => {
           <div className="bg-gray-800 rounded-lg p-6">
             <h2 className="text-2xl font-semibold mb-4">Select Your Monster</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {availableMonsters.map((monster) => (
+              {availableMonsters.map(monster => (
                 <button
                   key={monster.id}
                   onClick={() => startBattle(monster)}
@@ -121,14 +121,14 @@ const BattleArena: React.FC = () => {
                 >
                   <div className="font-semibold">{monster.name}</div>
                   <div className="text-sm text-gray-400">{monster.type}</div>
-                  <div className="mt-2 text-sm">
-                    Level: {monster.level}
-                  </div>
+                  <div className="mt-2 text-sm">Level: {monster.level}</div>
                 </button>
               ))}
             </div>
           </div>
-        ) : battleState.status === 'battling' && battleState.playerMonster && battleState.opponentMonster ? (
+        ) : battleState.status === 'battling' &&
+          battleState.playerMonster &&
+          battleState.opponentMonster ? (
           <div className="space-y-8">
             {/* Battle Field */}
             <div className="grid grid-cols-2 gap-8">
@@ -155,7 +155,7 @@ const BattleArena: React.FC = () => {
                   <div>
                     <h3 className="font-semibold mb-2">Abilities:</h3>
                     <div className="grid grid-cols-2 gap-2">
-                      {battleState.playerMonster.abilities.map((ability) => (
+                      {battleState.playerMonster.abilities.map(ability => (
                         <button
                           key={ability}
                           className="p-2 bg-secondary/20 rounded hover:bg-secondary/30 transition-colors"
@@ -187,11 +187,8 @@ const BattleArena: React.FC = () => {
                   <div>
                     <h3 className="font-semibold mb-2">Abilities:</h3>
                     <div className="grid grid-cols-2 gap-2">
-                      {battleState.opponentMonster.abilities.map((ability) => (
-                        <div
-                          key={ability}
-                          className="p-2 bg-gray-700 rounded"
-                        >
+                      {battleState.opponentMonster.abilities.map(ability => (
+                        <div key={ability} className="p-2 bg-gray-700 rounded">
                           {ability}
                         </div>
                       ))}
@@ -226,13 +223,15 @@ const BattleArena: React.FC = () => {
               Battle {battleState.result === 'win' ? 'Victory' : 'Defeat'}!
             </h2>
             <button
-              onClick={() => setBattleState({
-                playerMonster: null,
-                opponentMonster: null,
-                turn: 1,
-                status: 'selecting',
-                result: null
-              })}
+              onClick={() =>
+                setBattleState({
+                  playerMonster: null,
+                  opponentMonster: null,
+                  turn: 1,
+                  status: 'selecting',
+                  result: null,
+                })
+              }
               className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg transition-colors"
             >
               Start New Battle
@@ -244,4 +243,4 @@ const BattleArena: React.FC = () => {
   );
 };
 
-export default BattleArena; 
+export default BattleArena;

@@ -10,7 +10,7 @@ export const apiClient = axios.create({
 });
 
 // Add request interceptor for authentication if needed
-apiClient.interceptors.request.use((config) => {
+apiClient.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -20,8 +20,8 @@ apiClient.interceptors.request.use((config) => {
 
 // Add response interceptor for error handling
 apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
+  response => response,
+  error => {
     if (error.response?.status === 401) {
       // Handle unauthorized access
       localStorage.removeItem('token');
@@ -29,4 +29,4 @@ apiClient.interceptors.response.use(
     }
     return Promise.reject(error);
   }
-); 
+);

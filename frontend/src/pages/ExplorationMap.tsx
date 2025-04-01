@@ -16,7 +16,7 @@ const biomes: Biome[] = [
     description: 'A lush forest teeming with nature-based monsters',
     monsterTypes: ['Flora', 'Terra', 'Aero'],
     unlocked: true,
-    imageUrl: '/biomes/forest.jpg'
+    imageUrl: '/biomes/forest.jpg',
   },
   {
     id: 'volcano',
@@ -24,7 +24,7 @@ const biomes: Biome[] = [
     description: 'Volcanic region home to fire-type monsters',
     monsterTypes: ['Pyro', 'Terra'],
     unlocked: false,
-    imageUrl: '/biomes/volcano.jpg'
+    imageUrl: '/biomes/volcano.jpg',
   },
   {
     id: 'ocean',
@@ -32,7 +32,7 @@ const biomes: Biome[] = [
     description: 'Deep ocean waters with aquatic monsters',
     monsterTypes: ['Hydro', 'Cryo'],
     unlocked: false,
-    imageUrl: '/biomes/ocean.jpg'
+    imageUrl: '/biomes/ocean.jpg',
   },
   {
     id: 'crystal',
@@ -40,8 +40,8 @@ const biomes: Biome[] = [
     description: 'Underground caves with crystalline monsters',
     monsterTypes: ['Lumina', 'Terra'],
     unlocked: false,
-    imageUrl: '/biomes/crystal.jpg'
-  }
+    imageUrl: '/biomes/crystal.jpg',
+  },
 ];
 
 const ExplorationMap: React.FC = () => {
@@ -50,7 +50,7 @@ const ExplorationMap: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold mb-8">Exploration Map</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {biomes.map((biome) => (
+          {biomes.map(biome => (
             <div
               key={biome.id}
               className={`relative rounded-lg overflow-hidden ${
@@ -64,11 +64,8 @@ const ExplorationMap: React.FC = () => {
                   <h2 className="text-2xl font-semibold mb-2">{biome.name}</h2>
                   <p className="text-gray-300 mb-2">{biome.description}</p>
                   <div className="flex flex-wrap gap-2">
-                    {biome.monsterTypes.map((type) => (
-                      <span
-                        key={type}
-                        className="px-2 py-1 bg-primary/20 rounded text-sm"
-                      >
+                    {biome.monsterTypes.map(type => (
+                      <span key={type} className="px-2 py-1 bg-primary/20 rounded text-sm">
                         {type}
                       </span>
                     ))}
@@ -88,4 +85,4 @@ const ExplorationMap: React.FC = () => {
   );
 };
 
-export default ExplorationMap; 
+export default ExplorationMap;

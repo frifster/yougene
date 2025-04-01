@@ -46,13 +46,13 @@ const GeneMarket: React.FC = () => {
           strength: 45,
           defense: 60,
           agility: 55,
-          intelligence: 50
+          intelligence: 50,
         },
         price: 1000,
-        seller: 'Player123'
+        seller: 'Player123',
       },
       listingDate: '2024-03-20',
-      status: 'available'
+      status: 'available',
     },
     {
       id: '2',
@@ -68,14 +68,14 @@ const GeneMarket: React.FC = () => {
           strength: 75,
           defense: 50,
           agility: 70,
-          intelligence: 60
+          intelligence: 60,
         },
         price: 2500,
-        seller: 'MonsterMaster'
+        seller: 'MonsterMaster',
       },
       listingDate: '2024-03-20',
-      status: 'available'
-    }
+      status: 'available',
+    },
   ];
 
   const filteredListings = availableListings.filter(listing => {
@@ -104,9 +104,7 @@ const GeneMarket: React.FC = () => {
           <button
             onClick={() => setSelectedTab('buy')}
             className={`px-4 py-2 rounded-lg transition-colors ${
-              selectedTab === 'buy'
-                ? 'bg-primary text-white'
-                : 'bg-gray-700 hover:bg-gray-600'
+              selectedTab === 'buy' ? 'bg-primary text-white' : 'bg-gray-700 hover:bg-gray-600'
             }`}
           >
             Buy Monsters
@@ -114,9 +112,7 @@ const GeneMarket: React.FC = () => {
           <button
             onClick={() => setSelectedTab('sell')}
             className={`px-4 py-2 rounded-lg transition-colors ${
-              selectedTab === 'sell'
-                ? 'bg-primary text-white'
-                : 'bg-gray-700 hover:bg-gray-600'
+              selectedTab === 'sell' ? 'bg-primary text-white' : 'bg-gray-700 hover:bg-gray-600'
             }`}
           >
             Sell Monsters
@@ -131,7 +127,7 @@ const GeneMarket: React.FC = () => {
               <input
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search monsters..."
                 className="w-full px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               />
@@ -140,7 +136,7 @@ const GeneMarket: React.FC = () => {
               <label className="block text-sm font-medium mb-2">Filter by Type</label>
               <select
                 value={filterType}
-                onChange={(e) => setFilterType(e.target.value)}
+                onChange={e => setFilterType(e.target.value)}
                 className="w-full px-4 py-2 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="all">All Types</option>
@@ -155,7 +151,7 @@ const GeneMarket: React.FC = () => {
 
         {/* Market Listings */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredListings.map((listing) => (
+          {filteredListings.map(listing => (
             <div key={listing.id} className="bg-gray-800 rounded-lg p-6">
               <div className="flex justify-between items-start mb-4">
                 <h3 className="text-xl font-semibold">{listing.monster.name}</h3>
@@ -184,11 +180,8 @@ const GeneMarket: React.FC = () => {
               <div className="mb-4">
                 <h4 className="font-semibold mb-2">Abilities:</h4>
                 <div className="grid grid-cols-2 gap-2">
-                  {listing.monster.abilities.map((ability) => (
-                    <div
-                      key={ability}
-                      className="p-2 bg-gray-700 rounded text-sm"
-                    >
+                  {listing.monster.abilities.map(ability => (
+                    <div key={ability} className="p-2 bg-gray-700 rounded text-sm">
                       {ability}
                     </div>
                   ))}
@@ -217,4 +210,4 @@ const GeneMarket: React.FC = () => {
   );
 };
 
-export default GeneMarket; 
+export default GeneMarket;

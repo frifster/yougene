@@ -23,4 +23,4 @@ export const useProgress = () => {
     throw new Error('useProgress must be used within a ProgressProvider');
   }
   return context;
-}; 
+};

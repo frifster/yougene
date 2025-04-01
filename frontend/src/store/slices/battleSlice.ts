@@ -37,21 +37,24 @@ const initialState: BattleState = {
   activeBattle: null,
   battleHistory: [],
   loading: false,
-  error: null
+  error: null,
 };
 
 const battleSlice = createSlice({
   name: 'battle',
   initialState,
   reducers: {
-    startBattle: (state, action: PayloadAction<{ id: string; playerMonster: Monster; opponentMonster: Monster }>) => {
+    startBattle: (
+      state,
+      action: PayloadAction<{ id: string; playerMonster: Monster; opponentMonster: Monster }>
+    ) => {
       state.activeBattle = {
         id: action.payload.id,
         playerMonster: action.payload.playerMonster,
         opponentMonster: action.payload.opponentMonster,
         status: 'in_progress',
         result: null,
-        rounds: []
+        rounds: [],
       };
     },
     updateBattleRound: (state, action: PayloadAction<BattleRound>) => {
@@ -63,7 +66,7 @@ const battleSlice = createSlice({
       if (state.activeBattle) {
         state.activeBattle.status = 'completed';
         state.activeBattle.result = action.payload.result;
-        
+
         // Add to battle history
         state.battleHistory.unshift({
           id: state.activeBattle.id,
@@ -71,11 +74,11 @@ const battleSlice = createSlice({
           opponentMonster: state.activeBattle.opponentMonster!,
           result: action.payload.result,
           date: new Date().toISOString(),
-          rounds: state.activeBattle.rounds
+          rounds: state.activeBattle.rounds,
         });
       }
     },
-    clearActiveBattle: (state) => {
+    clearActiveBattle: state => {
       state.activeBattle = null;
     },
     setLoading: (state, action: PayloadAction<boolean>) => {
@@ -83,8 +86,8 @@ const battleSlice = createSlice({
     },
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -93,7 +96,7 @@ export const {
   endBattle,
   clearActiveBattle,
   setLoading,
-  setError
+  setError,
 } = battleSlice.actions;
 
-export default battleSlice.reducer; 
+export default battleSlice.reducer;

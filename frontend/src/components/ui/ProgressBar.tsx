@@ -10,11 +10,11 @@ export const ProgressBar = ({ isLoading, className = '' }: ProgressBarProps) => 
 
   useEffect(() => {
     let interval: ReturnType<typeof setTimeout>;
-    
+
     if (isLoading) {
       setProgress(0);
       interval = setInterval(() => {
-        setProgress((prev) => {
+        setProgress(prev => {
           if (prev >= 90) {
             clearInterval(interval);
             return 90;
@@ -46,4 +46,4 @@ export const ProgressBar = ({ isLoading, className = '' }: ProgressBarProps) => 
       />
     </div>
   );
-}; 
+};

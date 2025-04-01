@@ -5,8 +5,8 @@ import { logout } from '../store/slices/authSlice';
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api',
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
 // Add a request interceptor to add the auth token
@@ -36,13 +36,12 @@ api.interceptors.response.use(
 
 // Auth endpoints
 export const authAPI = {
-  login: (email: string, password: string) =>
-    api.post('/auth/login', { email, password }),
+  login: (email: string, password: string) => api.post('/auth/login', { email, password }),
   register: (username: string, email: string, password: string) =>
     api.post('/auth/register', { username, email, password }),
   logout: () => api.post('/auth/logout'),
   getProfile: () => api.get('/auth/profile'),
-  updateProfile: (data: any) => api.put('/auth/profile', data)
+  updateProfile: (data: any) => api.put('/auth/profile', data),
 };
 
 // Monster endpoints
@@ -53,16 +52,15 @@ export const monsterAPI = {
   updateMonster: (id: string, data: any) => api.put(`/monsters/${id}`, data),
   deleteMonster: (id: string) => api.delete(`/monsters/${id}`),
   fuseMonsters: (parent1Id: string, parent2Id: string) =>
-    api.post('/monsters/fuse', { parent1Id, parent2Id })
+    api.post('/monsters/fuse', { parent1Id, parent2Id }),
 };
 
 // Battle endpoints
 export const battleAPI = {
   startBattle: (monsterId: string) => api.post('/battles', { monsterId }),
   getBattle: (id: string) => api.get(`/battles/${id}`),
-  endBattle: (id: string, result: 'win' | 'loss' | 'draw') =>
-    api.put(`/battles/${id}`, { result }),
-  getBattleHistory: () => api.get('/battles/history')
+  endBattle: (id: string, result: 'win' | 'loss' | 'draw') => api.put(`/battles/${id}`, { result }),
+  getBattleHistory: () => api.get('/battles/history'),
 };
 
 // Market endpoints
@@ -70,10 +68,8 @@ export const marketAPI = {
   getListings: () => api.get('/market/listings'),
   createListing: (monsterId: string, price: number) =>
     api.post('/market/listings', { monsterId, price }),
-  purchaseListing: (listingId: string) =>
-    api.post(`/market/listings/${listingId}/purchase`),
-  cancelListing: (listingId: string) =>
-    api.delete(`/market/listings/${listingId}`)
+  purchaseListing: (listingId: string) => api.post(`/market/listings/${listingId}/purchase`),
+  cancelListing: (listingId: string) => api.delete(`/market/listings/${listingId}`),
 };
 
-export default api; 
+export default api;

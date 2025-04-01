@@ -25,11 +25,13 @@ function App() {
         <div className="min-h-screen bg-background">
           <GlobalProgressBar />
           <Navigation />
-          <Suspense fallback={
-            <div className="flex items-center justify-center min-h-screen">
-              <div className="text-text/80">Loading...</div>
-            </div>
-          }>
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center min-h-screen">
+                <div className="text-text/80">Loading...</div>
+              </div>
+            }
+          >
             <Routes>
               {/* Public routes */}
               <Route path="/" element={<LandingPage />} />
@@ -37,41 +39,62 @@ function App() {
               <Route path="/register" element={<RegisterPage />} />
 
               {/* Protected routes */}
-              <Route path="/game-hub" element={
-                <ProtectedRoute>
-                  <GameHub />
-                </ProtectedRoute>
-              } />
-              <Route path="/explore" element={
-                <ProtectedRoute>
-                  <ExplorationMap />
-                </ProtectedRoute>
-              } />
-              <Route path="/collection" element={
-                <ProtectedRoute>
-                  <MonsterCollection />
-                </ProtectedRoute>
-              } />
-              <Route path="/fusion" element={
-                <ProtectedRoute>
-                  <FusionLab />
-                </ProtectedRoute>
-              } />
-              <Route path="/battle" element={
-                <ProtectedRoute>
-                  <BattleArena />
-                </ProtectedRoute>
-              } />
-              <Route path="/market" element={
-                <ProtectedRoute>
-                  <GeneMarket />
-                </ProtectedRoute>
-              } />
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <ResearcherProfile />
-                </ProtectedRoute>
-              } />
+              <Route
+                path="/game-hub"
+                element={
+                  <ProtectedRoute>
+                    <GameHub />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/explore"
+                element={
+                  <ProtectedRoute>
+                    <ExplorationMap />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/collection"
+                element={
+                  <ProtectedRoute>
+                    <MonsterCollection />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/fusion"
+                element={
+                  <ProtectedRoute>
+                    <FusionLab />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/battle"
+                element={
+                  <ProtectedRoute>
+                    <BattleArena />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/market"
+                element={
+                  <ProtectedRoute>
+                    <GeneMarket />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <ResearcherProfile />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </Suspense>
         </div>
@@ -80,4 +103,4 @@ function App() {
   );
 }
 
-export default App; 
+export default App;

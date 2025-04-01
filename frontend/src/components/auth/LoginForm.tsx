@@ -48,7 +48,7 @@ export const LoginForm = () => {
                 type="email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 className="appearance-none relative block w-full px-3 py-2 border border-white/10 bg-white/5 placeholder-text/50 text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent sm:text-sm transition-colors duration-200"
                 placeholder="Email address"
               />
@@ -63,7 +63,7 @@ export const LoginForm = () => {
                 type="password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 className="appearance-none relative block w-full px-3 py-2 border border-white/10 bg-white/5 placeholder-text/50 text-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent sm:text-sm transition-colors duration-200"
                 placeholder="Password"
               />
@@ -100,4 +100,4 @@ export const LoginForm = () => {
       </div>
     </div>
   );
-}; 
+};

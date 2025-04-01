@@ -33,7 +33,7 @@ const initialState: AuthState = {
   token: localStorage.getItem('token'),
   isAuthenticated: false,
   loading: false,
-  error: null
+  error: null,
 };
 
 const authSlice = createSlice({
@@ -46,7 +46,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       localStorage.setItem('token', action.payload.token);
     },
-    logout: (state) => {
+    logout: state => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
@@ -60,7 +60,10 @@ const authSlice = createSlice({
         state.user.credits = action.payload;
       }
     },
-    updateAchievement: (state, action: PayloadAction<{ id: string; progress: number; completed: boolean }>) => {
+    updateAchievement: (
+      state,
+      action: PayloadAction<{ id: string; progress: number; completed: boolean }>
+    ) => {
       if (state.user) {
         const achievement = state.user.achievements.find(a => a.id === action.payload.id);
         if (achievement) {
@@ -74,18 +77,11 @@ const authSlice = createSlice({
     },
     setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
-    }
-  }
+    },
+  },
 });
 
-export const {
-  login,
-  logout,
-  updateUser,
-  updateCredits,
-  updateAchievement,
-  setLoading,
-  setError
-} = authSlice.actions;
+export const { login, logout, updateUser, updateCredits, updateAchievement, setLoading, setError } =
+  authSlice.actions;
 
-export default authSlice.reducer; 
+export default authSlice.reducer;

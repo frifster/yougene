@@ -28,7 +28,7 @@ const Profile: React.FC = () => {
     battlesWon: 45,
     battlesLost: 12,
     totalCredits: 15000,
-    fusionSuccessRate: 75
+    fusionSuccessRate: 75,
   };
 
   const achievements: Achievement[] = [
@@ -38,7 +38,7 @@ const Profile: React.FC = () => {
       description: 'Collect 10 unique monsters',
       progress: 8,
       maxProgress: 10,
-      completed: false
+      completed: false,
     },
     {
       id: '2',
@@ -46,7 +46,7 @@ const Profile: React.FC = () => {
       description: 'Successfully fuse 5 monsters',
       progress: 3,
       maxProgress: 5,
-      completed: false
+      completed: false,
     },
     {
       id: '3',
@@ -54,7 +54,7 @@ const Profile: React.FC = () => {
       description: 'Win 50 battles',
       progress: 45,
       maxProgress: 50,
-      completed: false
+      completed: false,
     },
     {
       id: '4',
@@ -62,8 +62,8 @@ const Profile: React.FC = () => {
       description: 'Discover monsters of all types',
       progress: 4,
       maxProgress: 5,
-      completed: false
-    }
+      completed: false,
+    },
   ];
 
   return (
@@ -117,7 +117,12 @@ const Profile: React.FC = () => {
               </div>
               <div className="flex justify-between">
                 <span>Win Rate:</span>
-                <span>{Math.round((userStats.battlesWon / (userStats.battlesWon + userStats.battlesLost)) * 100)}%</span>
+                <span>
+                  {Math.round(
+                    (userStats.battlesWon / (userStats.battlesWon + userStats.battlesLost)) * 100
+                  )}
+                  %
+                </span>
               </div>
             </div>
           </div>
@@ -141,15 +146,17 @@ const Profile: React.FC = () => {
         <div className="bg-gray-800 rounded-lg p-6">
           <h2 className="text-2xl font-semibold mb-6">Achievements</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {achievements.map((achievement) => (
+            {achievements.map(achievement => (
               <div key={achievement.id} className="bg-gray-700 rounded-lg p-4">
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="font-semibold">{achievement.name}</h3>
-                  <span className={`px-2 py-1 rounded text-sm ${
-                    achievement.completed
-                      ? 'bg-green-500/20 text-green-400'
-                      : 'bg-gray-600 text-gray-400'
-                  }`}>
+                  <span
+                    className={`px-2 py-1 rounded text-sm ${
+                      achievement.completed
+                        ? 'bg-green-500/20 text-green-400'
+                        : 'bg-gray-600 text-gray-400'
+                    }`}
+                  >
                     {achievement.completed ? 'Completed' : 'In Progress'}
                   </span>
                 </div>
@@ -158,7 +165,7 @@ const Profile: React.FC = () => {
                   <div
                     className="bg-primary h-2 rounded-full"
                     style={{
-                      width: `${(achievement.progress / achievement.maxProgress) * 100}%`
+                      width: `${(achievement.progress / achievement.maxProgress) * 100}%`,
                     }}
                   />
                 </div>
@@ -175,4 +182,4 @@ const Profile: React.FC = () => {
   );
 };
 
-export default Profile; 
+export default Profile;

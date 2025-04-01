@@ -35,8 +35,8 @@ const FusionLab: React.FC = () => {
         strength: 45,
         defense: 60,
         agility: 55,
-        intelligence: 50
-      }
+        intelligence: 50,
+      },
     },
     {
       id: '2',
@@ -50,9 +50,9 @@ const FusionLab: React.FC = () => {
         strength: 75,
         defense: 50,
         agility: 70,
-        intelligence: 60
-      }
-    }
+        intelligence: 60,
+      },
+    },
   ];
 
   const calculateCompatibility = (monster1: Monster, monster2: Monster) => {
@@ -79,7 +79,7 @@ const FusionLab: React.FC = () => {
     <div className="min-h-screen bg-background text-text p-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold mb-8">Fusion Lab</h1>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
           {/* Parent 1 Selection */}
           <div className="bg-gray-800 rounded-lg p-6">
@@ -113,7 +113,7 @@ const FusionLab: React.FC = () => {
               <div className="space-y-4">
                 <h3 className="text-lg mb-2">Select a monster:</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  {availableMonsters.map((monster) => (
+                  {availableMonsters.map(monster => (
                     <button
                       key={monster.id}
                       onClick={() => handleParentSelect(monster, 1)}
@@ -160,7 +160,7 @@ const FusionLab: React.FC = () => {
               <div className="space-y-4">
                 <h3 className="text-lg mb-2">Select a monster:</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  {availableMonsters.map((monster) => (
+                  {availableMonsters.map(monster => (
                     <button
                       key={monster.id}
                       onClick={() => handleParentSelect(monster, 2)}
@@ -186,7 +186,7 @@ const FusionLab: React.FC = () => {
               </div>
             )}
           </div>
-          
+
           {selectedParent1 && selectedParent2 ? (
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -219,4 +219,4 @@ const FusionLab: React.FC = () => {
   );
 };
 
-export default FusionLab; 
+export default FusionLab;

@@ -54,4 +54,4 @@ export const useUserAndFriends = (userId: string) => {
     isLoading: userQuery.isLoading || friendsQuery.isLoading,
     error: userQuery.error || friendsQuery.error,
   };
-}; 
+};

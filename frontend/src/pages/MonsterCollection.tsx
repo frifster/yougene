@@ -16,10 +16,10 @@ const MonsterCollection: React.FC = () => {
         health: 70,
         attack: 45,
         defense: 60,
-        speed: 55
+        speed: 55,
       },
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     },
     {
       id: '2',
@@ -32,11 +32,11 @@ const MonsterCollection: React.FC = () => {
         health: 65,
         attack: 75,
         defense: 50,
-        speed: 70
+        speed: 70,
       },
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }
+      updatedAt: new Date().toISOString(),
+    },
   ];
 
   const handleMonsterClick = (monster: Monster) => {
@@ -49,11 +49,9 @@ const MonsterCollection: React.FC = () => {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold">Monster Collection</h1>
-          <div className="text-text/60">
-            {monsters.length} Monsters
-          </div>
+          <div className="text-text/60">{monsters.length} Monsters</div>
         </div>
-        
+
         <MonsterGrid
           monsters={monsters}
           onMonsterClick={handleMonsterClick}
@@ -65,4 +63,4 @@ const MonsterCollection: React.FC = () => {
   );
 };
 
-export default MonsterCollection; 
+export default MonsterCollection;

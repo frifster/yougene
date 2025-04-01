@@ -12,7 +12,7 @@ interface MonsterCardProps {
 const sizeClasses = {
   sm: 'p-4 text-sm',
   md: 'p-6 text-base',
-  lg: 'p-8 text-lg'
+  lg: 'p-8 text-lg',
 };
 
 const MonsterCard: React.FC<MonsterCardProps> = ({
@@ -20,7 +20,7 @@ const MonsterCard: React.FC<MonsterCardProps> = ({
   onClick,
   showStats = true,
   size = 'md',
-  className = ''
+  className = '',
 }) => {
   const handleClick = () => {
     if (onClick) {
@@ -39,7 +39,7 @@ const MonsterCard: React.FC<MonsterCardProps> = ({
       onClick={handleClick}
       role={onClick ? 'button' : 'article'}
       tabIndex={onClick ? 0 : -1}
-      onKeyDown={(e) => {
+      onKeyDown={e => {
         if (onClick && (e.key === 'Enter' || e.key === ' ')) {
           e.preventDefault();
           handleClick();
@@ -51,9 +51,7 @@ const MonsterCard: React.FC<MonsterCardProps> = ({
         <div>
           <h2 className="font-semibold text-xl mb-1">{monster.name}</h2>
           <div className="flex items-center gap-2">
-            <span className="px-2 py-1 bg-primary/20 rounded text-sm">
-              {monster.type}
-            </span>
+            <span className="px-2 py-1 bg-primary/20 rounded text-sm">{monster.type}</span>
             <span className="text-text/60">Lvl {monster.level}</span>
           </div>
         </div>
@@ -67,11 +65,8 @@ const MonsterCard: React.FC<MonsterCardProps> = ({
       <div className="mb-4">
         <h3 className="text-sm font-medium text-text/60 mb-2">Abilities</h3>
         <div className="flex flex-wrap gap-2">
-          {monster.abilities.map((ability) => (
-            <span
-              key={ability}
-              className="px-2 py-1 bg-secondary/20 rounded text-sm"
-            >
+          {monster.abilities.map(ability => (
+            <span key={ability} className="px-2 py-1 bg-secondary/20 rounded text-sm">
               {ability}
             </span>
           ))}
@@ -104,4 +99,4 @@ const MonsterCard: React.FC<MonsterCardProps> = ({
   );
 };
 
-export default MonsterCard; 
+export default MonsterCard;

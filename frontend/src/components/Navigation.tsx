@@ -208,7 +208,9 @@ const Navigation: React.FC = () => {
       <div
         ref={mobileMenuRef}
         className={`md:hidden transition-all duration-300 ease-in-out transform ${
-          isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
+          isMobileMenuOpen
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 -translate-y-2 pointer-events-none'
         }`}
         id="mobile-menu"
       >
@@ -221,4 +223,4 @@ const Navigation: React.FC = () => {
   );
 };
 
-export default Navigation; 
+export default Navigation;
