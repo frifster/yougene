@@ -7,6 +7,7 @@ import { config } from './config/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import authRoutes from './routes/auth.js';
 import battleRoutes from './routes/battle.routes.js';
+import breedingRoutes from './routes/breeding.routes.js';
 import monsterRoutes from './routes/monsterRoutes.js';
 
 // Initialize Express app
@@ -38,6 +39,7 @@ app.get('/health', (req, res) => {
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/monsters', monsterRoutes);
 app.use('/api/v1/battles', battleRoutes);
+app.use('/api/v1/breeding', breedingRoutes);
 
 // Monsters route (to be implemented)
 app.use('/api/v1/monsters', (req, res) => {

@@ -7,6 +7,9 @@ export interface IMonster extends Document {
   attack: number;
   defense: number;
   description: string;
+  parent1?: mongoose.Types.ObjectId;
+  parent2?: mongoose.Types.ObjectId;
+  generation: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -18,6 +21,9 @@ const MonsterSchema: Schema = new Schema({
   attack: { type: Number, required: true, min: 0 },
   defense: { type: Number, required: true, min: 0 },
   description: { type: String, required: true },
+  parent1: { type: Schema.Types.ObjectId, ref: 'Monster' },
+  parent2: { type: Schema.Types.ObjectId, ref: 'Monster' },
+  generation: { type: Number, required: true, default: 0 }
 }, {
   timestamps: true
 });
