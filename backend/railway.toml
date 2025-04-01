@@ -7,4 +7,5 @@ buildCommand = "npm install && npm run build"
 startCommand = "node --experimental-specifier-resolution=node dist/index.js"
 healthcheckPath = "/health"
 healthcheckTimeout = 100
-restartPolicyType = "on_failure" 
+restartPolicyType = "on_failure"
+autoDeploy = false 
