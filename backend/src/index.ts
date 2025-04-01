@@ -17,7 +17,7 @@ const httpServer = createServer(app);
 // Initialize Socket.IO with production-ready config
 const io = new Server(httpServer, {
   cors: {
-    origin: config.frontendUrl,
+    origin: '*',
     methods: ['GET', 'POST'],
     credentials: true
   },
@@ -26,7 +26,7 @@ const io = new Server(httpServer, {
 
 // Configure CORS
 const corsOptions = {
-  origin: config.frontendUrl,
+  origin: '*',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
