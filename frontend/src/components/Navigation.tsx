@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/hooks/useAuth';
 import { useProgress } from '../contexts/hooks/useProgress';
 
@@ -67,8 +67,8 @@ const Navigation: React.FC = () => {
 
     return (
       <>
-        <Link
-          to="/login"
+        <button
+          onClick={() => navigate('/login')}
           className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
             isActive('/login')
               ? 'bg-primary/20 text-primary'
@@ -76,9 +76,9 @@ const Navigation: React.FC = () => {
           }`}
         >
           Login
-        </Link>
-        <Link
-          to="/register"
+        </button>
+        <button
+          onClick={() => navigate('/register')}
           className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
             isActive('/register')
               ? 'bg-primary/20 text-primary'
@@ -86,7 +86,7 @@ const Navigation: React.FC = () => {
           }`}
         >
           Register
-        </Link>
+        </button>
       </>
     );
   };
@@ -96,8 +96,8 @@ const Navigation: React.FC = () => {
 
     return (
       <>
-        <Link
-          to="/game-hub"
+        <button
+          onClick={() => navigate('/game-hub')}
           className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
             isActive('/game-hub')
               ? 'bg-primary/20 text-primary'
@@ -105,9 +105,9 @@ const Navigation: React.FC = () => {
           }`}
         >
           Lab
-        </Link>
-        <Link
-          to="/profile"
+        </button>
+        <button
+          onClick={() => navigate('/profile')}
           className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
             isActive('/profile')
               ? 'bg-primary/20 text-primary'
@@ -115,9 +115,9 @@ const Navigation: React.FC = () => {
           }`}
         >
           Profile
-        </Link>
-        <Link
-          to="/collection"
+        </button>
+        <button
+          onClick={() => navigate('/collection')}
           className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
             isActive('/collection')
               ? 'bg-primary/20 text-primary'
@@ -125,9 +125,9 @@ const Navigation: React.FC = () => {
           }`}
         >
           Collection
-        </Link>
-        <Link
-          to="/battle"
+        </button>
+        <button
+          onClick={() => navigate('/battle')}
           className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 select-none ${
             isActive('/battle')
               ? 'bg-primary/20 text-primary'
@@ -135,7 +135,7 @@ const Navigation: React.FC = () => {
           }`}
         >
           Battle
-        </Link>
+        </button>
       </>
     );
   };
@@ -145,9 +145,12 @@ const Navigation: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center select-none">
+          <button
+            onClick={() => navigate('/')}
+            className="flex items-center select-none"
+          >
             <span className="text-xl font-bold gradient-text">YouGene</span>
-          </Link>
+          </button>
 
           {/* Navigation Links */}
           <div className="hidden md:block">
@@ -162,7 +165,7 @@ const Navigation: React.FC = () => {
             <button
               type="button"
               onClick={toggleMobileMenu}
-              onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyPress}
               className="inline-flex items-center justify-center p-2 rounded-lg text-text/80 hover:text-text hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-primary/50 select-none"
               aria-controls="mobile-menu"
               aria-expanded={isMobileMenuOpen}

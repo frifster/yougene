@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 
 interface ContainerProps {
-  children: ReactNode | JSX.Element;
+  children: ReactNode;
   className?: string;
 }
 
