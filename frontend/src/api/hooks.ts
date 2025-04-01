@@ -29,7 +29,7 @@ export const useUpdateUser = () => {
       const { data } = await apiClient.patch<User>(`/users/${userId}`, userData);
       return data;
     },
-    onSuccess: (data, variables) => {
+    onSuccess: (_, variables) => {
       // Invalidate and refetch user data
       queryClient.invalidateQueries({ queryKey: ['user', variables.userId] });
     },

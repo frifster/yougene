@@ -1,7 +1,5 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import MonsterGrid from '../components/monsters/MonsterGrid';
-import { RootState } from '../store';
 import { Monster } from '../store/slices/monsterSlice';
 
 const MonsterCollection: React.FC = () => {
