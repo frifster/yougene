@@ -7,12 +7,13 @@ export interface IMonster extends Document {
   type: string;
   level: number;
   geneticStability: number;
-  abilities: string[];
+  abilities: mongoose.Types.ObjectId[];
   stats: {
     health: number;
     attack: number;
     defense: number;
     speed: number;
+    energy: number;
   };
   parent1?: mongoose.Types.ObjectId;
   parent2?: mongoose.Types.ObjectId;
@@ -30,12 +31,13 @@ const MonsterSchema: Schema = new Schema({
   type: { type: String, required: true },
   level: { type: Number, required: true, min: 1 },
   geneticStability: { type: Number, required: true, min: 0, max: 100 },
-  abilities: [{ type: String, required: true }],
+  abilities: [{ type: Schema.Types.ObjectId, ref: 'Ability' }],
   stats: {
     health: { type: Number, required: true, min: 1 },
     attack: { type: Number, required: true, min: 0 },
     defense: { type: Number, required: true, min: 0 },
-    speed: { type: Number, required: true, min: 0 }
+    speed: { type: Number, required: true, min: 0 },
+    energy: { type: Number, required: true, min: 0, max: 100 }
   },
   parent1: { type: Schema.Types.ObjectId, ref: 'Monster' },
   parent2: { type: Schema.Types.ObjectId, ref: 'Monster' },

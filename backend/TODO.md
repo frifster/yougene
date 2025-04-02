@@ -144,31 +144,38 @@
   - [ ] Rate limiting
 
 ## Immediate Tasks
-1. [ ] Implement advanced breeding mechanics
+1. [ ] Create seed data
+   - [ ] Design base monster types
+   - [ ] Create starter monsters
+   - [ ] Define genetic traits and abilities
+   - [ ] Set up seed script
+   - [ ] Add environment-specific seeds
+
+2. [ ] Implement advanced breeding mechanics
    - [ ] Add mutation system
    - [ ] Implement genetic stability calculations
    - [ ] Add breeding compatibility checks
    - [ ] Create breeding history tracking
 
-2. [ ] Enhance monster model
+3. [ ] Enhance monster model
    - [ ] Add more genetic properties
    - [ ] Implement ability system
    - [ ] Add evolution paths
    - [ ] Create type system
 
-3. [ ] Improve API endpoints
+4. [ ] Improve API endpoints
    - [ ] Add pagination
    - [ ] Implement filtering
    - [ ] Add sorting options
    - [ ] Create search functionality
 
-4. [ ] Add authentication
+5. [ ] Add authentication
    - [ ] Implement JWT
    - [ ] Create user model
    - [ ] Add protected routes
    - [ ] Implement role system
 
-5. [ ] Set up testing
+6. [ ] Set up testing
    - [ ] Configure Jest
    - [ ] Add test database
    - [ ] Create test helpers

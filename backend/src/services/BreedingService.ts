@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { IMonster } from '../models/Monster.js';
 import { MonsterService } from './MonsterService.js';
 
@@ -29,7 +30,7 @@ export class BreedingService {
     const stats = this.generateOffspringStats(parent1, parent2);
 
     // Generate offspring abilities
-    const abilities = this.generateOffspringAbilities(parent1, parent2);
+    const abilities = await this.generateOffspringAbilities(parent1, parent2);
 
     // Create offspring monster
     const offspring: Partial<IMonster> = {
@@ -105,13 +106,15 @@ export class BreedingService {
     attack: number;
     defense: number;
     speed: number;
+    energy: number;
   } {
     // Calculate base stats as weighted average of parents
     const stats = {
       health: Math.round((parent1.stats.health + parent2.stats.health) / 2),
       attack: Math.round((parent1.stats.attack + parent2.stats.attack) / 2),
       defense: Math.round((parent1.stats.defense + parent2.stats.defense) / 2),
-      speed: Math.round((parent1.stats.speed + parent2.stats.speed) / 2)
+      speed: Math.round((parent1.stats.speed + parent2.stats.speed) / 2),
+      energy: Math.round((parent1.stats.energy + parent2.stats.energy) / 2)
     };
 
     // Apply random variation (±10%)
@@ -124,7 +127,7 @@ export class BreedingService {
     return stats;
   }
 
-  private generateOffspringAbilities(parent1: IMonster, parent2: IMonster): string[] {
+  private async generateOffspringAbilities(parent1: IMonster, parent2: IMonster): Promise<mongoose.Types.ObjectId[]> {
     // Combine abilities from both parents
     const allAbilities = [...new Set([...parent1.abilities, ...parent2.abilities])];
 

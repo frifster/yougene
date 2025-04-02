@@ -11,7 +11,8 @@
     "build": "swc src -d dist",
     "start": "node dist/src/index.js",
     "lint": "eslint . --ext .ts",
-    "test": "vitest"
+    "test": "vitest",
+    "seed": "tsx src/scripts/seedDatabase.ts"
   },
   "dependencies": {
     "@types/uuid": "^10.0.0",
