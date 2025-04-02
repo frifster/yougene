@@ -1,12 +1,14 @@
 import { Request, Response } from 'express';
-import { IMonster } from '../models/Monster.js';
+import { BreedingService } from '../services/BreedingService.js';
 import { MonsterService } from '../services/MonsterService.js';
 
 export class MonsterController {
   private monsterService: MonsterService;
+  private breedingService: BreedingService;
 
   constructor() {
     this.monsterService = new MonsterService();
+    this.breedingService = new BreedingService();
   }
 
   async createMonster(req: Request, res: Response): Promise<void> {
@@ -63,6 +65,22 @@ export class MonsterController {
       res.status(200).json({ message: 'Monster deleted successfully' });
     } catch (error) {
       res.status(500).json({ message: 'Error deleting monster', error });
+    }
+  }
+
+  async breedMonsters(req: Request, res: Response): Promise<void> {
+    try {
+      const { parent1Id, parent2Id } = req.body;
+
+      if (!parent1Id || !parent2Id) {
+        res.status(400).json({ message: 'Both parent IDs are required' });
+        return;
+      }
+
+      const offspring = await this.breedingService.breedMonsters(parent1Id, parent2Id);
+      res.status(201).json(offspring);
+    } catch (error) {
+      res.status(400).json({ message: 'Error breeding monsters', error });
     }
   }
 } 

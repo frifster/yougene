@@ -19,4 +19,7 @@ router.put('/:id', monsterController.updateMonster.bind(monsterController));
 // Delete a monster
 router.delete('/:id', monsterController.deleteMonster.bind(monsterController));
 
+// Breed monsters
+router.post('/breed', monsterController.breedMonsters.bind(monsterController));
+
 export default router; 

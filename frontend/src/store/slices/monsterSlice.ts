@@ -16,6 +16,10 @@ export interface Monster {
   parentIds?: string[];
   createdAt: string;
   updatedAt: string;
+  // Genetic properties
+  dominantGenes: string[];
+  recessiveGenes: string[];
+  mutationRate: number;
 }
 
 interface MonsterState {
