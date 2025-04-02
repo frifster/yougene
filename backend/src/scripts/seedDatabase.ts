@@ -28,14 +28,34 @@ async function seedDatabase() {
     ]);
     console.log('Cleared existing data');
 
-    // Seed abilities first
-    const createdAbilities = await Ability.insertMany(starterAbilities);
+    // First pass: Create abilities without combo effects
+    const abilitiesWithoutCombos = starterAbilities.map(ability => ({
+      ...ability,
+      comboEffects: undefined // Temporarily remove combo effects
+    }));
+    const createdAbilities = await Ability.insertMany(abilitiesWithoutCombos);
     console.log(`Created ${createdAbilities.length} abilities`);
 
     // Create a map of ability names to their IDs
     const abilityMap = new Map(
       createdAbilities.map(ability => [ability.name, ability._id])
     );
+
+    // Second pass: Update abilities with combo effects
+    for (const ability of starterAbilities) {
+      if (ability.comboEffects) {
+        const updatedComboEffects = ability.comboEffects.map(combo => ({
+          ...combo,
+          requiredAbilityId: abilityMap.get(ability.name) // Use the current ability's ID
+        }));
+
+        await Ability.findByIdAndUpdate(
+          abilityMap.get(ability.name),
+          { comboEffects: updatedComboEffects }
+        );
+      }
+    }
+    console.log('Updated abilities with combo effects');
 
     // Update monster abilities to use ability IDs
     const monstersWithAbilityIds = starterMonsters.map(monster => ({

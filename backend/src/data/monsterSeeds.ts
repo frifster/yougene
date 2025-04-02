@@ -14,6 +14,7 @@ interface MonsterSeedData {
     defense: number;
     speed: number;
     energy: number;
+    maxEnergy: number;
   };
   dominantGenes: string[];
   recessiveGenes: string[];
@@ -35,7 +36,8 @@ export const starterMonsters: MonsterSeedData[] = [
       attack: 15,
       defense: 20,
       speed: 10,
-      energy: 100
+      energy: 100,
+      maxEnergy: 100
     },
     dominantGenes: ["Growth", "Resilience"],
     recessiveGenes: ["Regeneration"],
@@ -55,7 +57,8 @@ export const starterMonsters: MonsterSeedData[] = [
       attack: 25,
       defense: 15,
       speed: 15,
-      energy: 100
+      energy: 100,
+      maxEnergy: 100
     },
     dominantGenes: ["Fire", "Speed"],
     recessiveGenes: ["Heat"],
@@ -75,7 +78,8 @@ export const starterMonsters: MonsterSeedData[] = [
       attack: 20,
       defense: 18,
       speed: 12,
-      energy: 100
+      energy: 100,
+      maxEnergy: 100
     },
     dominantGenes: ["Water", "Agility"],
     recessiveGenes: ["Flow"],
@@ -95,7 +99,8 @@ export const starterMonsters: MonsterSeedData[] = [
       attack: 18,
       defense: 25,
       speed: 8,
-      energy: 100
+      energy: 100,
+      maxEnergy: 100
     },
     dominantGenes: ["Earth", "Strength"],
     recessiveGenes: ["Stability"],
@@ -115,7 +120,8 @@ export const starterMonsters: MonsterSeedData[] = [
       attack: 22,
       defense: 12,
       speed: 20,
-      energy: 100
+      energy: 100,
+      maxEnergy: 100
     },
     dominantGenes: ["Air", "Swiftness"],
     recessiveGenes: ["Wind"],
