@@ -497,7 +497,7 @@
     },
     {
       "name": "Breeding",
-      "description": "Monster breeding system endpoints\n\nRequired Headers:\n- Content-Type: application/json\n- Authorization: Bearer {{token}}\n\nFeatures:\n- Breed two monsters together\n- Create offspring with inherited traits",
+      "description": "Monster breeding system endpoints\n\nRequired Headers:\n- Content-Type: application/json\n- Authorization: Bearer {{token}}\n\nFeatures:\n- Breed two monsters together\n- Create offspring with inherited traits\n- Genetic inheritance system\n- Mutation mechanics\n- Parent compatibility checking",
       "item": [
         {
           "name": "Breed Monsters",
@@ -515,15 +515,73 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"parent1Id\": \"monster1_id\",\n    \"parent2Id\": \"monster2_id\"\n}"
+              "raw": "{\n    \"parent1Id\": \"{{lastCreatedMonsterId}}\",\n    \"parent2Id\": \"{{secondMonsterId}}\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/v1/breeding/breed",
               "host": ["{{baseUrl}}"],
               "path": ["api", "v1", "breeding", "breed"]
             },
-            "description": "Breed two monsters together\n\nRequest Body:\n- parent1Id: ID of the first parent monster\n- parent2Id: ID of the second parent monster\n\nResponse:\n- 201: Offspring created successfully\n- 400: Invalid input\n- 404: One or both parent monsters not found\n- 401: Unauthorized (missing or invalid token)\n\nExample Test Script:\n```javascript\n// Get two monster IDs from environment variables\nconst parent1Id = pm.environment.get('monster1_id');\nconst parent2Id = pm.environment.get('monster2_id');\n\n// Set the request body\npm.request.body.raw = JSON.stringify({\n    parent1Id: parent1Id,\n    parent2Id: parent2Id\n});\n\n// Test the response\npm.test('Status code is 201', function () {\n    pm.response.to.have.status(201);\n});\n\npm.test('Response has monster data', function () {\n    const response = pm.response.json();\n    pm.expect(response.data).to.have.property('monster');\n    pm.expect(response.data.monster).to.have.property('name');\n    pm.expect(response.data.monster).to.have.property('parent1');\n    pm.expect(response.data.monster).to.have.property('parent2');\n    pm.expect(response.data.monster).to.have.property('generation');\n});\n```"
-          }
+            "description": "Breed two monsters together\n\nRequest Body:\n- parent1Id: ID of the first parent monster\n- parent2Id: ID of the second parent monster\n\nResponse:\n- 201: Offspring created successfully\n- 400: Invalid input or incompatible parents\n- 404: One or both parent monsters not found\n- 401: Unauthorized (missing or invalid token)\n\nGenetic Mechanics:\n- Genetic Stability: Average of parents, reduced by generation difference and type incompatibility\n- Mutation Rate: Average of parents, increased by generation difference and type incompatibility\n- Gene Inheritance: 2-3 dominant genes, 1-2 recessive genes from combined parent genes\n- Stat Inheritance: Average of parents with ±10% random variation\n- Ability Inheritance: 2-3 abilities from combined parent abilities"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "// Check if the response is successful",
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "// Parse the response body",
+                  "const response = pm.response.json();",
+                  "",
+                  "// Check if the response has monster data",
+                  "pm.test('Response has monster data', function () {",
+                  "    pm.expect(response).to.have.property('id');",
+                  "    pm.expect(response).to.have.property('name');",
+                  "    pm.expect(response).to.have.property('type');",
+                  "    pm.expect(response).to.have.property('level');",
+                  "    pm.expect(response).to.have.property('geneticStability');",
+                  "    pm.expect(response).to.have.property('mutationRate');",
+                  "    pm.expect(response).to.have.property('dominantGenes');",
+                  "    pm.expect(response).to.have.property('recessiveGenes');",
+                  "    pm.expect(response).to.have.property('abilities');",
+                  "    pm.expect(response).to.have.property('stats');",
+                  "    pm.expect(response).to.have.property('parent1');",
+                  "    pm.expect(response).to.have.property('parent2');",
+                  "    pm.expect(response).to.have.property('generation');",
+                  "});",
+                  "",
+                  "// Validate genetic properties",
+                  "pm.test('Genetic properties are valid', function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.geneticStability).to.be.at.least(0).and.at.most(100);",
+                  "    pm.expect(response.mutationRate).to.be.at.least(0).and.at.most(100);",
+                  "    pm.expect(response.dominantGenes).to.be.an('array').with.length.at.least(2).and.at.most(3);",
+                  "    pm.expect(response.recessiveGenes).to.be.an('array').with.length.at.least(1).and.at.most(2);",
+                  "});",
+                  "",
+                  "// Validate stats",
+                  "pm.test('Stats are valid', function () {",
+                  "    const response = pm.response.json();",
+                  "    pm.expect(response.stats.health).to.be.at.least(1);",
+                  "    pm.expect(response.stats.attack).to.be.at.least(0);",
+                  "    pm.expect(response.stats.defense).to.be.at.least(0);",
+                  "    pm.expect(response.stats.speed).to.be.at.least(0);",
+                  "});",
+                  "",
+                  "// Save the offspring ID to collection variable",
+                  "if (response.id) {",
+                  "    pm.collectionVariables.set('lastCreatedMonsterId', response.id);",
+                  "    console.log('Offspring ID saved to collection variable');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
         }
       ]
     }
