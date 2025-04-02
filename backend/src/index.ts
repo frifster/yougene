@@ -1,9 +1,10 @@
 import cors from 'cors';
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { connectDB } from './config/database.js';
 import { config } from './config/index.js';
+import { activeWebSocketConnections, battleRoomsActive, getMetrics, metricsMiddleware } from './config/monitoring.js';
 import { apiLimiter, authLimiter, battleLimiter, breedingLimiter } from './config/rateLimiter.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import abilityRoutes from './routes/abilityRoutes.js';
@@ -12,7 +13,7 @@ import battleRoutes from './routes/battle.routes.js';
 import breedingRoutes from './routes/breeding.routes.js';
 import monsterRoutes from './routes/monsterRoutes.js';
 import { BattleRoomManager } from './websocket/BattleRoomManager.js';
-import { BattleServer, BattleSocket, ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './websocket/types.js';
+import { BattleSocket, ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from './websocket/types.js';
 
 // Initialize Express app
 const app = express();
@@ -41,7 +42,16 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Apply general API rate limiter
-app.use(apiLimiter);
+app.use(apiLimiter as unknown as RequestHandler);
+
+// Apply monitoring middleware
+app.use(metricsMiddleware as unknown as RequestHandler);
+
+// Add metrics endpoint
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', 'text/plain');
+  res.send(await getMetrics());
+});
 
 // Basic health check route
 app.get('/health', async (req, res) => {
@@ -70,10 +80,10 @@ app.get('/health', async (req, res) => {
 app.set('io', io);
 
 // API Routes with specific rate limiters
-app.use('/api/v1/auth', authLimiter, authRoutes);
+app.use('/api/v1/auth', authLimiter as unknown as RequestHandler, authRoutes);
 app.use('/api/v1/monsters', monsterRoutes);
-app.use('/api/v1/battles', battleLimiter, battleRoutes);
-app.use('/api/v1/breeding', breedingLimiter, breedingRoutes);
+app.use('/api/v1/battles', battleLimiter as unknown as RequestHandler, battleRoutes);
+app.use('/api/v1/breeding', breedingLimiter as unknown as RequestHandler, breedingRoutes);
 app.use('/api/v1/abilities', abilityRoutes);
 
 // Initialize battle room manager
@@ -81,6 +91,18 @@ const battleManager = new BattleRoomManager(io);
 
 io.on('connection', (socket: BattleSocket) => {
   console.log('Client connected:', socket.id);
+  
+  // Update WebSocket connection metric
+  activeWebSocketConnections.inc();
+
+  // Update battle rooms metric when rooms are created/ended
+  battleManager.on('roomCreated', () => {
+    battleRoomsActive.inc();
+  });
+
+  battleManager.on('roomEnded', () => {
+    battleRoomsActive.dec();
+  });
 
   // Authentication middleware
   socket.use((packet, next) => {
@@ -155,6 +177,8 @@ io.on('connection', (socket: BattleSocket) => {
 
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id);
+    // Update WebSocket connection metric
+    activeWebSocketConnections.dec();
     if (socket.data.battleId) {
       battleManager.leaveBattle(socket.data.battleId, socket);
     }

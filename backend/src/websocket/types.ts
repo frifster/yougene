@@ -28,9 +28,9 @@ export interface SocketData {
 }
 
 export interface BattleState {
-  battleId: string;
-  players: PlayerInfo[];
-  monsters: BattleMonster[];
+  id: string;
+  players: Map<string, PlayerInfo>;
+  monsters: Map<string, BattleMonster>;
   status: 'waiting' | 'in_progress' | 'finished';
   startTime?: Date;
   endTime?: Date;

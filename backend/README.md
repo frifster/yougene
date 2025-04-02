@@ -280,4 +280,54 @@ pnpm dev
 
 ## License
 
-This project is proprietary software. See the main README for license details. 
+This project is proprietary software. See the main README for license details.
+
+## Monitoring
+
+The application includes monitoring capabilities using Prometheus and Grafana. To start the monitoring stack:
+
+1. Make sure Docker and Docker Compose are installed on your system
+2. Navigate to the backend directory
+3. Start the monitoring services:
+   ```bash
+   docker-compose up -d
+   ```
+
+This will start:
+- Prometheus on http://localhost:9090
+- Grafana on http://localhost:3001 (login with admin/admin)
+
+### Accessing Metrics
+
+- Prometheus UI: http://localhost:9090
+  - No login required
+  - Access the metrics endpoint at http://localhost:9090/metrics
+
+- Grafana: http://localhost:3001
+  - Default credentials: admin/admin
+  - Configure Prometheus data source:
+    1. Go to Configuration > Data Sources
+    2. Add new Prometheus data source
+    3. Set URL to: http://prometheus:9090
+    4. Click "Save & Test"
+
+### Available Metrics
+
+The application exposes the following metrics:
+- Active WebSocket connections
+- Active battle rooms
+- HTTP request rates and durations
+- Error rates
+- Response times
+
+### Stopping the Monitoring Stack
+
+To stop the monitoring services:
+```bash
+docker-compose down
+```
+
+To stop and remove all data:
+```bash
+docker-compose down -v
+``` 

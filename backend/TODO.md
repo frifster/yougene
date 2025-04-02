@@ -135,7 +135,13 @@
    - [x] Implement error handler middleware with detailed logging
    - [x] Add environment-based log levels
    - [x] Create custom ApiError class for operational errors
-9. [ ] Set up monitoring
+9. [x] Set up monitoring
+  - [x] Configure Prometheus metrics collection
+  - [x] Add custom metrics for HTTP requests
+  - [x] Add WebSocket connection metrics
+  - [x] Add battle room metrics
+  - [x] Add error tracking metrics
+  - [x] Set up metrics endpoint
 10. [ ] Implement combo system in battle service
 11. [ ] Add area of effect ability handling
 12. [x] Create battle room management system

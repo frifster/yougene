@@ -1,29 +1,35 @@
+import { EventEmitter } from 'events';
+import { Server } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
 import { BattleMonster, BattleServer, BattleSocket, BattleState, PlayerInfo, StatusEffect } from './types.js';
 
-export class BattleRoomManager {
-  private rooms: Map<string, BattleState>;
+export class BattleRoomManager extends EventEmitter {
+  private battles: Map<string, BattleState>;
   private io: BattleServer;
 
   constructor(io: BattleServer) {
-    this.rooms = new Map();
+    super();
+    this.battles = new Map();
     this.io = io;
   }
 
   createBattleRoom(): string {
     const battleId = uuidv4();
-    const initialState: BattleState = {
-      battleId,
-      players: [],
-      monsters: [],
-      status: 'waiting'
+    const battleState: BattleState = {
+      id: battleId,
+      players: new Map(),
+      monsters: new Map(),
+      status: 'waiting',
+      startTime: undefined,
+      endTime: undefined,
     };
-    this.rooms.set(battleId, initialState);
+    this.battles.set(battleId, battleState);
+    this.emit('roomCreated', battleId);
     return battleId;
   }
 
   joinBattle(battleId: string, socket: BattleSocket, playerInfo: PlayerInfo): boolean {
-    const room = this.rooms.get(battleId);
+    const room = this.battles.get(battleId);
     if (!room) {
       socket.emit('error', 'Battle room not found');
       return false;
@@ -34,7 +40,7 @@ export class BattleRoomManager {
       return false;
     }
 
-    if (room.players.length >= 2) {
+    if (room.players.size >= 2) {
       socket.emit('error', 'Battle room is full');
       return false;
     }
@@ -45,15 +51,15 @@ export class BattleRoomManager {
     socket.data.playerInfo = playerInfo;
 
     // Add player to battle state
-    room.players.push(playerInfo);
-    room.monsters.push(playerInfo.monster);
+    room.players.set(playerInfo.id, playerInfo);
+    room.monsters.set(playerInfo.monster.id, playerInfo.monster);
 
     // Notify all players in the room
     this.io.to(battleId).emit('playerJoined', playerInfo);
     this.io.to(battleId).emit('battleStateUpdate', room);
 
     // Start battle if both players are ready
-    if (room.players.length === 2 && room.players.every(p => p.ready)) {
+    if (room.players.size === 2 && Array.from(room.players.values()).every(p => p.ready)) {
       this.startBattle(battleId);
     }
 
@@ -61,20 +67,19 @@ export class BattleRoomManager {
   }
 
   leaveBattle(battleId: string, socket: BattleSocket): void {
-    const room = this.rooms.get(battleId);
+    const room = this.battles.get(battleId);
     if (!room) return;
 
-    // Remove player from battle state
-    const playerIndex = room.players.findIndex(p => p.id === socket.data.playerInfo?.id);
-    if (playerIndex !== -1) {
-      const player = room.players[playerIndex];
-      room.players.splice(playerIndex, 1);
-      room.monsters = room.monsters.filter(m => m.id !== player.monster.id);
+    const playerInfo = socket.data.playerInfo;
+    if (!playerInfo) return;
 
-      // Notify remaining players
-      this.io.to(battleId).emit('playerLeft', player.id);
-      this.io.to(battleId).emit('battleStateUpdate', room);
-    }
+    // Remove player from battle state
+    room.players.delete(playerInfo.id);
+    room.monsters.delete(playerInfo.monster.id);
+
+    // Notify remaining players
+    this.io.to(battleId).emit('playerLeft', playerInfo.id);
+    this.io.to(battleId).emit('battleStateUpdate', room);
 
     // Leave socket room
     socket.leave(battleId);
@@ -82,29 +87,32 @@ export class BattleRoomManager {
     socket.data.playerInfo = undefined;
 
     // Clean up empty rooms
-    if (room.players.length === 0) {
-      this.rooms.delete(battleId);
+    if (room.players.size === 0) {
+      this.battles.delete(battleId);
     }
   }
 
   setPlayerReady(battleId: string, socket: BattleSocket): void {
-    const room = this.rooms.get(battleId);
+    const room = this.battles.get(battleId);
     if (!room) return;
 
-    const player = room.players.find(p => p.id === socket.data.playerInfo?.id);
+    const playerInfo = socket.data.playerInfo;
+    if (!playerInfo) return;
+
+    const player = room.players.get(playerInfo.id);
     if (player) {
       player.ready = true;
       this.io.to(battleId).emit('battleStateUpdate', room);
 
       // Start battle if both players are ready
-      if (room.players.length === 2 && room.players.every(p => p.ready)) {
+      if (room.players.size === 2 && Array.from(room.players.values()).every(p => p.ready)) {
         this.startBattle(battleId);
       }
     }
   }
 
   private startBattle(battleId: string): void {
-    const room = this.rooms.get(battleId);
+    const room = this.battles.get(battleId);
     if (!room) return;
 
     room.status = 'in_progress';
@@ -113,23 +121,24 @@ export class BattleRoomManager {
   }
 
   endBattle(battleId: string): void {
-    const room = this.rooms.get(battleId);
+    const room = this.battles.get(battleId);
     if (!room) return;
 
     room.status = 'finished';
     room.endTime = new Date();
-    this.io.to(battleId).emit('battleStateUpdate', room);
+    this.battles.delete(battleId);
+    this.emit('roomEnded', battleId);
   }
 
   getBattleState(battleId: string): BattleState | undefined {
-    return this.rooms.get(battleId);
+    return this.battles.get(battleId);
   }
 
   updateMonsterPosition(battleId: string, monsterId: string, position: { x: number; y: number }): void {
-    const room = this.rooms.get(battleId);
+    const room = this.battles.get(battleId);
     if (!room) return;
 
-    const monster = room.monsters.find(m => m.id === monsterId);
+    const monster = room.monsters.get(monsterId);
     if (monster) {
       monster.position = position;
       this.io.to(battleId).emit('battleStateUpdate', room);
@@ -137,10 +146,10 @@ export class BattleRoomManager {
   }
 
   updateMonsterStats(battleId: string, monsterId: string, stats: Partial<BattleMonster['stats']>): void {
-    const room = this.rooms.get(battleId);
+    const room = this.battles.get(battleId);
     if (!room) return;
 
-    const monster = room.monsters.find(m => m.id === monsterId);
+    const monster = room.monsters.get(monsterId);
     if (monster) {
       monster.stats = { ...monster.stats, ...stats };
       this.io.to(battleId).emit('battleStateUpdate', room);
@@ -148,10 +157,10 @@ export class BattleRoomManager {
   }
 
   updateMonsterStatusEffects(battleId: string, monsterId: string, statusEffects: StatusEffect[]): void {
-    const room = this.rooms.get(battleId);
+    const room = this.battles.get(battleId);
     if (!room) return;
 
-    const monster = room.monsters.find(m => m.id === monsterId);
+    const monster = room.monsters.get(monsterId);
     if (monster) {
       monster.statusEffects = statusEffects;
       this.io.to(battleId).emit('battleStateUpdate', room);
@@ -159,10 +168,10 @@ export class BattleRoomManager {
   }
 
   updateMonsterCooldowns(battleId: string, monsterId: string, cooldowns: Record<string, number>): void {
-    const room = this.rooms.get(battleId);
+    const room = this.battles.get(battleId);
     if (!room) return;
 
-    const monster = room.monsters.find(m => m.id === monsterId);
+    const monster = room.monsters.get(monsterId);
     if (monster) {
       monster.abilityCooldowns = cooldowns;
       this.io.to(battleId).emit('battleStateUpdate', room);
