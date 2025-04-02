@@ -107,21 +107,26 @@ export class BreedingService {
     defense: number;
     speed: number;
     energy: number;
+    maxEnergy: number;
   } {
     // Calculate base stats as weighted average of parents
+    const maxEnergy = Math.round((parent1.stats.maxEnergy + parent2.stats.maxEnergy) / 2);
     const stats = {
       health: Math.round((parent1.stats.health + parent2.stats.health) / 2),
       attack: Math.round((parent1.stats.attack + parent2.stats.attack) / 2),
       defense: Math.round((parent1.stats.defense + parent2.stats.defense) / 2),
       speed: Math.round((parent1.stats.speed + parent2.stats.speed) / 2),
-      energy: Math.round((parent1.stats.energy + parent2.stats.energy) / 2)
+      energy: maxEnergy, // Start with full energy
+      maxEnergy
     };
 
-    // Apply random variation (±10%)
+    // Apply random variation (±10%) to all stats except maxEnergy
     Object.keys(stats).forEach(key => {
-      const stat = key as keyof typeof stats;
-      const variation = stats[stat] * 0.1;
-      stats[stat] = Math.round(stats[stat] + (Math.random() * variation * 2 - variation));
+      if (key !== 'maxEnergy' && key !== 'energy') {
+        const stat = key as keyof typeof stats;
+        const variation = stats[stat] * 0.1;
+        stats[stat] = Math.round(stats[stat] + (Math.random() * variation * 2 - variation));
+      }
     });
 
     return stats;

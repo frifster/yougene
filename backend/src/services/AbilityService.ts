@@ -151,7 +151,14 @@ export class AbilityService {
       // Apply stat modifications
       if (effect.stat) {
         const multiplier = effect.type === 'buff' ? 1 : -1;
-        monster.stats[effect.stat] = Math.max(0, monster.stats[effect.stat] + (effect.value * multiplier));
+        if (effect.stat === 'accuracy') {
+          // Handle accuracy separately since it's not in monster.stats
+          // Store accuracy modifications in a separate field or handle it during ability usage
+          continue;
+        } else if (effect.stat in monster.stats) {
+          const statKey = effect.stat as keyof typeof monster.stats;
+          monster.stats[statKey] = Math.max(0, monster.stats[statKey] + (effect.value * multiplier));
+        }
       }
 
       updatedEffects.push(effect);

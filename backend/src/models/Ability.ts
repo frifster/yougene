@@ -2,7 +2,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IStatusEffect {
   type: 'buff' | 'debuff' | 'dot' | 'hot';  // dot = damage over time, hot = heal over time
-  stat?: 'attack' | 'defense' | 'speed' | 'energy';
+  stat?: 'attack' | 'defense' | 'speed' | 'energy' | 'accuracy';
   value: number;
   duration: number; // in seconds
   tickRate?: number; // for dot/hot effects, in seconds
@@ -40,7 +40,7 @@ const StatusEffectSchema = new Schema({
   },
   stat: { 
     type: String, 
-    enum: ['attack', 'defense', 'speed', 'energy']
+    enum: ['attack', 'defense', 'speed', 'energy', 'accuracy']
   },
   value: { type: Number, required: true },
   duration: { type: Number, required: true, min: 1 },
