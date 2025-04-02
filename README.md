@@ -9,10 +9,20 @@ yougene/
 ├── frontend/           # React + TypeScript frontend
 │   ├── src/
 │   │   ├── components/    # Reusable UI components
+│   │   │   ├── monsters/  # Monster-related components
+│   │   │   │   ├── MonsterCard.tsx    # Basic monster display
+│   │   │   │   ├── MonsterGrid.tsx    # Grid of monsters
+│   │   │   │   ├── MonsterViewer.tsx  # Detailed monster view
+│   │   │   │   ├── MonsterBreeding.tsx # Breeding interface
+│   │   │   │   └── MonsterBattle.tsx  # Battle system
+│   │   │   ├── layout/    # Layout components
+│   │   │   ├── ui/        # UI components
+│   │   │   └── auth/      # Authentication components
 │   │   ├── pages/        # Page components
 │   │   ├── assets/       # Static assets (images, models)
 │   │   ├── utils/        # Utility functions
 │   │   ├── store/        # Redux store configuration
+│   │   ├── api/          # API services
 │   │   └── types/        # TypeScript type definitions
 │   └── package.json
 │
@@ -22,6 +32,8 @@ yougene/
     │   ├── models/       # Database models
     │   ├── routes/       # API routes
     │   ├── services/     # Business logic
+    │   │   ├── MonsterService.ts  # Monster CRUD operations
+    │   │   └── BreedingService.ts # Breeding mechanics
     │   └── utils/        # Utility functions
     └── package.json
 ```
@@ -34,12 +46,41 @@ yougene/
 - GSAP for animations
 - Redux for state management
 - Tailwind CSS for styling
+- Framer Motion for UI animations
 
 ### Backend
 - Node.js with Express
 - MongoDB for database
 - JWT for authentication
 - Socket.io for real-time features
+
+## Features
+
+### Monster System
+- Monster collection and management
+- Detailed monster viewing with stats and genetic information
+- Monster grid with filtering and sorting
+- Genetic stability tracking
+- Generation tracking
+
+### Breeding System
+- Advanced breeding mechanics with genetic inheritance
+- Parent compatibility checking
+- Genetic stability calculation
+- Mutation rate system
+- Offspring generation with:
+  - Inherited stats with random variation
+  - Combined abilities
+  - Genetic traits (dominant/recessive genes)
+  - Type inheritance
+  - Name generation
+
+### Battle System
+- Turn-based combat
+- Stat-based damage calculation
+- Health tracking
+- Battle status and results
+- Visual feedback
 
 ## Getting Started
 
@@ -86,7 +127,7 @@ pnpm dev
 
 ## Development Roadmap
 
-### Phase 1: Basic YouGene System
+### Phase 1: Basic YouGene System ✅
 - Core game loop implementation
 - 30 starter monsters with basic genetics
 - Simple YouGene breeding mechanics
