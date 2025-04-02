@@ -5,6 +5,7 @@ import { Server } from 'socket.io';
 import { connectDB } from './config/database.js';
 import { config } from './config/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import abilityRoutes from './routes/abilityRoutes.js';
 import authRoutes from './routes/auth.js';
 import battleRoutes from './routes/battle.routes.js';
 import breedingRoutes from './routes/breeding.routes.js';
@@ -64,6 +65,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/monsters', monsterRoutes);
 app.use('/api/v1/battles', battleRoutes);
 app.use('/api/v1/breeding', breedingRoutes);
+app.use('/api/v1/abilities', abilityRoutes);
 
 // Monsters route (to be implemented)
 app.use('/api/v1/monsters', (req, res) => {
