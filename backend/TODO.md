@@ -22,11 +22,11 @@
 - [ ] Special breeding conditions
 
 ## Phase 3: Battle System (In Progress)
-- [ ] Real-time battle system
-  - [ ] WebSocket server setup
-  - [ ] Real-time state synchronization
-  - [ ] Battle room management
-  - [ ] Client-server communication protocol
+- [x] Real-time battle system
+  - [x] WebSocket server setup
+  - [x] Real-time state synchronization
+  - [x] Battle room management
+  - [x] Client-server communication protocol
 - [ ] Ability system
   - [x] Basic ability model
   - [x] Ability types (damage, heal, buff, debuff, status)
@@ -39,7 +39,7 @@
   - [ ] Real-time ability casting
   - [ ] Ability animation synchronization
 - [ ] Battle mechanics
-  - [ ] Real-time movement system
+  - [x] Real-time movement system
   - [ ] Collision detection
   - [ ] Type advantages/disadvantages
   - [ ] Critical hits
@@ -49,9 +49,9 @@
   - [ ] Knockback and positioning
 - [ ] Battle history
 - [ ] PvP system
-  - [ ] Matchmaking system
-  - [ ] Battle room creation
-  - [ ] Player synchronization
+  - [x] Matchmaking system
+  - [x] Battle room creation
+  - [x] Player synchronization
   - [ ] Lag compensation
 - [ ] AI opponents
   - [ ] AI behavior system
@@ -90,14 +90,14 @@
 - [ ] Load balancing
 - [ ] Performance monitoring
 - [ ] Error tracking
-- [ ] WebSocket connection optimization
+- [x] WebSocket connection optimization
 - [ ] State synchronization optimization
 - [ ] Network latency handling
 
 ## Phase 8: Testing & Quality Assurance
 - [ ] Unit tests
-  - [ ] Monster model tests
-  - [ ] Ability model tests
+  - [x] Monster model tests
+  - [x] Ability model tests
   - [ ] Breeding service tests
   - [ ] Battle service tests
   - [ ] WebSocket handler tests
@@ -119,23 +119,32 @@
 ## Immediate Tasks
 1. [x] Create seed data for abilities and monsters
 2. [x] Implement ability cooldowns and energy regeneration
-3. [ ] Set up WebSocket server
-4. [ ] Implement real-time battle state management
-5. [ ] Set up user authentication
-6. [ ] Add input validation and sanitization
-7. [ ] Implement rate limiting
+3. [x] Set up WebSocket server
+4. [x] Implement real-time battle state management
+5. [x] Set up user authentication
+6. [x] Add input validation and sanitization
+7. [x] Implement rate limiting
+   - [x] General API rate limiting (100 requests/15min)
+   - [x] Auth routes rate limiting (5 requests/hour)
+   - [x] Battle routes rate limiting (30 requests/min)
+   - [x] Breeding routes rate limiting (10 requests/hour)
+   - [x] Skip rate limiting for health check endpoint
 8. [ ] Add error logging system
 9. [ ] Set up monitoring
 10. [ ] Implement combo system in battle service
 11. [ ] Add area of effect ability handling
-12. [ ] Create battle room management system
-13. [ ] Implement real-time movement system
+12. [x] Create battle room management system
+13. [x] Implement real-time movement system
 14. [ ] Add collision detection
+15. [ ] Implement proper WebSocket authentication
+16. [ ] Add battle state persistence
+17. [ ] Implement battle rewards system
+18. [ ] Add battle history tracking
 
 ## Technical Debt
 - [ ] Refactor breeding service for better type safety
 - [ ] Add proper error handling for database operations
-- [ ] Implement request validation middleware
+- [x] Implement request validation middleware
 - [ ] Add API response standardization
 - [ ] Set up proper logging system
 - [ ] Add database indexes for frequently queried fields
@@ -148,7 +157,7 @@
 - [ ] Implement proper error handling for battle system
 - [ ] Add battle state persistence
 - [ ] Optimize database queries for battle system
-- [ ] Implement WebSocket reconnection handling
+- [x] Implement WebSocket reconnection handling
 - [ ] Add state reconciliation system
 - [ ] Optimize network payload size
 - [ ] Implement proper lag compensation

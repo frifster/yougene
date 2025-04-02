@@ -4,6 +4,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { connectDB } from './config/database.js';
 import { config } from './config/index.js';
+import { apiLimiter, authLimiter, battleLimiter, breedingLimiter } from './config/rateLimiter.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import abilityRoutes from './routes/abilityRoutes.js';
 import authRoutes from './routes/auth.js';
@@ -39,6 +40,9 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+// Apply general API rate limiter
+app.use(apiLimiter);
+
 // Basic health check route
 app.get('/health', async (req, res) => {
   try {
@@ -65,17 +69,16 @@ app.get('/health', async (req, res) => {
 // Share io instance with routes
 app.set('io', io);
 
-// API Routes
-app.use('/api/v1/auth', authRoutes);
+// API Routes with specific rate limiters
+app.use('/api/v1/auth', authLimiter, authRoutes);
 app.use('/api/v1/monsters', monsterRoutes);
-app.use('/api/v1/battles', battleRoutes);
-app.use('/api/v1/breeding', breedingRoutes);
+app.use('/api/v1/battles', battleLimiter, battleRoutes);
+app.use('/api/v1/breeding', breedingLimiter, breedingRoutes);
 app.use('/api/v1/abilities', abilityRoutes);
 
 // Initialize battle room manager
 const battleManager = new BattleRoomManager(io);
 
-// Socket.IO connection handling
 io.on('connection', (socket: BattleSocket) => {
   console.log('Client connected:', socket.id);
 
