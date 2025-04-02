@@ -129,7 +129,12 @@
    - [x] Battle routes rate limiting (30 requests/min)
    - [x] Breeding routes rate limiting (10 requests/hour)
    - [x] Skip rate limiting for health check endpoint
-8. [ ] Add error logging system
+8. [x] Add error logging system
+   - [x] Set up Winston logger with multiple transports
+   - [x] Configure log rotation and file size limits
+   - [x] Implement error handler middleware with detailed logging
+   - [x] Add environment-based log levels
+   - [x] Create custom ApiError class for operational errors
 9. [ ] Set up monitoring
 10. [ ] Implement combo system in battle service
 11. [ ] Add area of effect ability handling
