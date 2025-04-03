@@ -5,9 +5,9 @@ global:
 scrape_configs:
   - job_name: 'yougene-api'
     static_configs:
-      - targets: ['host.docker.internal:3000']
+      - targets: ['${API_URL}']
     metrics_path: '/metrics'
     scrape_interval: 5s
     scrape_timeout: 4s
     honor_labels: true
-    scheme: http 
+    scheme: https 

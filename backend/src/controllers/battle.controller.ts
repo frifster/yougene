@@ -1,6 +1,17 @@
 import { Request, Response } from 'express';
+import { z } from 'zod';
 import { Character } from '../models/battle.js';
 import { BattleService } from '../services/battle.service.js';
+
+const executeTurnSchema = z.object({
+  attackerId: z.string(),
+  defenderId: z.string(),
+  abilityId: z.string().optional(),
+  position: z.object({
+    x: z.number(),
+    y: z.number(),
+  }).optional(),
+});
 
 export class BattleController {
   private battleService: BattleService;
@@ -32,10 +43,20 @@ export class BattleController {
   executeTurn = async (req: Request, res: Response): Promise<void> => {
     try {
       const { battleId } = req.params;
-      const { attackerId, defenderId } = req.body;
-      const battle = this.battleService.executeTurn(battleId, attackerId, defenderId);
+      const validatedData = executeTurnSchema.parse(req.body);
+      const battle = this.battleService.executeTurn(
+        battleId,
+        validatedData.attackerId,
+        validatedData.defenderId,
+        validatedData.abilityId,
+        validatedData.position
+      );
       res.json(battle);
     } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ error: 'Invalid request data', details: error.errors });
+        return;
+      }
       res.status(400).json({ error: 'Failed to execute turn' });
     }
   };
