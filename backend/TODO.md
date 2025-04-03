@@ -53,10 +53,17 @@
   - [x] Battle room creation
   - [x] Player synchronization
   - [x] Lag compensation
-- [ ] AI opponents
-  - [ ] AI behavior system
-  - [ ] Pathfinding
-  - [ ] Decision making
+- [x] AI opponents
+  - [x] AI behavior system
+  - [x] Pathfinding
+  - [x] Decision making
+- [ ] AI Improvements:
+  - [ ] Energy management and cooldown tracking
+  - [ ] Status effect consideration in decision making
+  - [ ] Strategic positioning based on ability ranges
+  - [ ] Combo system utilization
+  - [ ] Better battlefield boundary awareness
+  - [ ] Advanced tactical decision making
 
 ## Phase 4: User System
 - [ ] User authentication

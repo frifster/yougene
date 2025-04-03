@@ -1,13 +1,19 @@
 import { v4 as uuidv4 } from 'uuid';
 import { IAbility, IStatusEffect } from '../models/Ability.js';
 import { BattleAction, BattleLog, BattleState, Character } from '../models/battle.js';
+import { AIService } from './ai.service.js';
 
 export class BattleService {
   private battles: Map<string, BattleState> = new Map();
   private battleLogs: Map<string, BattleLog> = new Map();
   private abilityCooldowns: Map<string, Map<string, number>> = new Map();
+  private aiService: AIService;
 
-  createBattle(player1: Character, player2: Character): BattleState {
+  constructor() {
+    this.aiService = new AIService();
+  }
+
+  createBattle(player1: Character, player2: Character, isAIOpponent: boolean = false): BattleState {
     const battleId = uuidv4();
     const battle: BattleState = {
       id: battleId,
@@ -32,6 +38,7 @@ export class BattleService {
       },
       createdAt: new Date(),
       updatedAt: new Date(),
+      isAIOpponent,
     };
 
     this.battles.set(battleId, battle);
@@ -120,13 +127,13 @@ export class BattleService {
     return 0;
   }
 
-  executeTurn(
+  async executeTurn(
     battleId: string,
     attackerId: string,
     defenderId: string,
     abilityId?: string,
     position?: { x: number; y: number }
-  ): BattleState {
+  ): Promise<BattleState> {
     const battle = this.battles.get(battleId);
     if (!battle) {
       throw new Error('Battle not found');
@@ -139,6 +146,25 @@ export class BattleService {
     const attacker = attackerId === battle.player1.id ? battle.player1 : battle.player2;
     const defender = defenderId === battle.player1.id ? battle.player1 : battle.player2;
 
+    // Execute player's turn
+    const updatedBattle = await this.executePlayerTurn(battle, attacker, defender, abilityId, position);
+
+    // If it's an AI battle and the battle is still in progress, execute AI's turn
+    if (updatedBattle.isAIOpponent && updatedBattle.status === 'in_progress') {
+      const aiCharacter = attackerId === battle.player1.id ? battle.player2 : battle.player1;
+      return this.executeAITurn(updatedBattle, aiCharacter);
+    }
+
+    return updatedBattle;
+  }
+
+  private async executePlayerTurn(
+    battle: BattleState,
+    attacker: Character,
+    defender: Character,
+    abilityId?: string,
+    position?: { x: number; y: number }
+  ): Promise<BattleState> {
     // Update position if provided
     if (position) {
       attacker.position = position;
@@ -153,7 +179,7 @@ export class BattleService {
       }
 
       // Check cooldown
-      const cooldowns = this.abilityCooldowns.get(battleId)!;
+      const cooldowns = this.abilityCooldowns.get(battle.id)!;
       if (cooldowns.has(abilityId)) {
         throw new Error('Ability is on cooldown');
       }
@@ -197,8 +223,8 @@ export class BattleService {
 
     // Record action
     const action: BattleAction = {
-      attackerId,
-      defenderId,
+      attackerId: attacker.id,
+      defenderId: defender.id,
       abilityId,
       damage,
       comboPoints,
@@ -207,7 +233,7 @@ export class BattleService {
       timestamp: new Date(),
     };
 
-    const battleLog = this.battleLogs.get(battleId)!;
+    const battleLog = this.battleLogs.get(battle.id)!;
     battleLog.actions.push(action);
     battleLog.stats.totalDamage += damage;
     battleLog.stats.abilityUsage[abilityId || 'basic_attack'] = (battleLog.stats.abilityUsage[abilityId || 'basic_attack'] || 0) + 1;
@@ -218,7 +244,7 @@ export class BattleService {
     aoeTargets.forEach(target => this.updateStatusEffects(target));
 
     // Update cooldowns
-    const cooldowns = this.abilityCooldowns.get(battleId)!;
+    const cooldowns = this.abilityCooldowns.get(battle.id)!;
     for (const [abilityId, remainingCooldown] of cooldowns.entries()) {
       if (remainingCooldown > 0) {
         cooldowns.set(abilityId, remainingCooldown - 1);
@@ -228,13 +254,31 @@ export class BattleService {
     // Check for winner
     if (defender.health === 0) {
       battle.status = 'completed';
-      battle.winner = attackerId;
+      battle.winner = attacker.id;
       battleLog.endTime = new Date();
-      battleLog.winner = attackerId;
+      battleLog.winner = attacker.id;
     }
 
     battle.updatedAt = new Date();
     return battle;
+  }
+
+  private async executeAITurn(battle: BattleState, aiCharacter: Character): Promise<BattleState> {
+    // Get AI decision
+    const decision = this.aiService.makeDecision(battle, aiCharacter);
+    const defender = aiCharacter.id === battle.player1.id ? battle.player2 : battle.player1;
+
+    // Execute AI's turn based on decision
+    switch (decision.action) {
+      case 'move':
+        return this.executePlayerTurn(battle, aiCharacter, defender, undefined, decision.position);
+      case 'ability':
+        return this.executePlayerTurn(battle, aiCharacter, defender, decision.abilityId);
+      case 'basic_attack':
+        return this.executePlayerTurn(battle, aiCharacter, defender);
+      default:
+        throw new Error('Invalid AI decision');
+    }
   }
 
   getBattle(battleId: string): BattleState | undefined {

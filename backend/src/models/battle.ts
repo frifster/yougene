@@ -18,18 +18,24 @@ export interface Character {
 
 export interface BattleState {
   id: string;
-  status: 'pending' | 'in_progress' | 'completed';
+  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
   player1: Character;
   player2: Character;
   currentTurn: number;
-  winner?: string;
-  createdAt: Date;
-  updatedAt: Date;
   battlefield: {
     width: number;
     height: number;
-    obstacles: Array<{ x: number; y: number; radius: number }>;
+    obstacles: Array<{
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+    }>;
   };
+  winner?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  isAIOpponent: boolean;
 }
 
 export interface BattleAction {
