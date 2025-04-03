@@ -24,6 +24,7 @@ export interface IAbility extends Document {
   power: number;
   accuracy: number;
   energyCost: number;
+  cooldown: number; // cooldown in seconds
   statusEffects: IStatusEffect[];
   comboEffects: IComboEffect[];
   areaOfEffect: boolean;
@@ -65,6 +66,7 @@ const AbilitySchema: Schema = new Schema({
   power: { type: Number, required: true, min: 0 },
   accuracy: { type: Number, required: true, min: 0, max: 100 },
   energyCost: { type: Number, required: true, min: 0 },
+  cooldown: { type: Number, required: true, min: 0, default: 0 },
   statusEffects: [StatusEffectSchema],
   comboEffects: [ComboEffectSchema],
   areaOfEffect: { type: Boolean, default: false },

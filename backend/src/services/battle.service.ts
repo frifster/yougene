@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Ability, BattleAction, BattleLog, BattleState, Character, StatusEffect } from '../models/battle.js';
+import { IAbility, IStatusEffect } from '../models/Ability.js';
+import { BattleAction, BattleLog, BattleState, Character } from '../models/battle.js';
 
 export class BattleService {
   private battles: Map<string, BattleState> = new Map();
@@ -61,7 +62,7 @@ export class BattleService {
     return battle;
   }
 
-  private calculateDamage(attacker: Character, defender: Character, ability?: Ability): number {
+  private calculateDamage(attacker: Character, defender: Character, ability?: IAbility): number {
     let baseDamage = ability ? ability.power : attacker.attack;
     let defense = defender.defense;
 
@@ -75,7 +76,7 @@ export class BattleService {
     return Math.max(0, baseDamage - defense);
   }
 
-  private applyStatusEffects(target: Character, effects: StatusEffect[]): void {
+  private applyStatusEffects(target: Character, effects: IStatusEffect[]): void {
     target.statusEffects.push(...effects);
   }
 
@@ -86,16 +87,16 @@ export class BattleService {
     });
   }
 
-  private handleAreaOfEffect(battle: BattleState, attacker: Character, ability: Ability): Character[] {
+  private handleAreaOfEffect(battle: BattleState, attacker: Character, ability: IAbility): Character[] {
     const targets: Character[] = [];
-    const { radius, shape } = ability.areaOfEffect!;
+    const { range } = ability;
 
-    if (shape === 'circle') {
+    if (ability.areaOfEffect) {
       const distance = Math.sqrt(
         Math.pow(attacker.position.x - battle.player1.position.x, 2) +
         Math.pow(attacker.position.y - battle.player1.position.y, 2)
       );
-      if (distance <= radius) {
+      if (distance <= range) {
         targets.push(battle.player1);
       }
 
@@ -103,7 +104,7 @@ export class BattleService {
         Math.pow(attacker.position.x - battle.player2.position.x, 2) +
         Math.pow(attacker.position.y - battle.player2.position.y, 2)
       );
-      if (distance2 <= radius) {
+      if (distance2 <= range) {
         targets.push(battle.player2);
       }
     }
@@ -111,7 +112,7 @@ export class BattleService {
     return targets;
   }
 
-  private updateComboPoints(attacker: Character, ability?: Ability): number {
+  private updateComboPoints(attacker: Character, ability?: IAbility): number {
     if (ability) {
       attacker.comboPoints = Math.min(attacker.comboPoints + 1, 5);
       return attacker.comboPoints;
@@ -144,7 +145,7 @@ export class BattleService {
     }
 
     // Handle ability usage
-    let ability: Ability | undefined;
+    let ability: IAbility | undefined;
     if (abilityId) {
       ability = attacker.abilities.find(a => a.id === abilityId);
       if (!ability) {
@@ -184,10 +185,10 @@ export class BattleService {
     }
 
     // Apply status effects
-    if (ability?.effects) {
-      this.applyStatusEffects(defender, ability.effects);
+    if (ability?.statusEffects) {
+      this.applyStatusEffects(defender, ability.statusEffects);
       aoeTargets.forEach(target => {
-        this.applyStatusEffects(target, ability!.effects!);
+        this.applyStatusEffects(target, ability!.statusEffects!);
       });
     }
 
@@ -201,7 +202,7 @@ export class BattleService {
       abilityId,
       damage,
       comboPoints,
-      statusEffects: ability?.effects,
+      statusEffects: ability?.statusEffects,
       position: attacker.position,
       timestamp: new Date(),
     };

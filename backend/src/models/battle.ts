@@ -1,23 +1,4 @@
-export interface Ability {
-  id: string;
-  name: string;
-  type: 'damage' | 'heal' | 'buff' | 'debuff' | 'status';
-  power: number;
-  energyCost: number;
-  cooldown: number;
-  areaOfEffect?: {
-    radius: number;
-    shape: 'circle' | 'cone' | 'line';
-  };
-  effects?: StatusEffect[];
-}
-
-export interface StatusEffect {
-  type: 'buff' | 'debuff' | 'dot' | 'hot';
-  value: number;
-  duration: number;
-  source: string;
-}
+import { IAbility, IStatusEffect } from './Ability.js';
 
 export interface Character {
   id: string;
@@ -30,8 +11,8 @@ export interface Character {
   energy: number;
   maxEnergy: number;
   position: { x: number; y: number };
-  abilities: Ability[];
-  statusEffects: StatusEffect[];
+  abilities: IAbility[];
+  statusEffects: IStatusEffect[];
   comboPoints: number;
 }
 
@@ -58,7 +39,7 @@ export interface BattleAction {
   damage: number;
   healing?: number;
   comboPoints?: number;
-  statusEffects?: StatusEffect[];
+  statusEffects?: IStatusEffect[];
   timestamp: Date;
   position?: { x: number; y: number };
 }
